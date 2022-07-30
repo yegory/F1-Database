@@ -1,5 +1,6 @@
--- ALL TABLES INCLUDED, no syntax errors, but not 100% correct either.
--- Need to add ON DELETE/UPDATE CASCADE/NO ACTION/ etc 2
+-- ALL TABLES INCLUDED, no syntax errors
+-- Need to add ON DELETE/UPDATE CASCADE/NO ACTION/ to the foreign key fields
+-- and Constraints (didn't cover in class yet)
 
 CREATE TABLE CarModel (
 	carModel    	CHAR(50),
@@ -24,10 +25,7 @@ CREATE TABLE ResultsScoring (
 
 CREATE TABLE Sponsor (
 	sponsorID   	INTEGER,
-	legalName 		CHAR(50),
-	parentCompany	CHAR(100),
-	annualRevenue	INTEGER,
-	website			CHAR(255),
+	name 		    CHAR(50),
 	PRIMARY KEY 	(sponsorID)
 );
 
@@ -97,16 +95,11 @@ CREATE TABLE SeasonRace (
 CREATE TABLE Car (
 	carID       	INTEGER,
 	mileage     	INTEGER,
-	carModel		INTEGER,
+	carModel		CHAR(50),
 	teamID		    INTEGER,
-	athleteID		INTEGER,
-	eventID		    INTEGER,
-	trackID		    INTEGER,
 	PRIMARY KEY     (carID),
 	FOREIGN KEY 	(carModel)  REFERENCES  CarModel,
-	FOREIGN KEY 	(teamID)    REFERENCES  Team,
-	FOREIGN KEY 	(athleteID) REFERENCES  Athlete,
-	FOREIGN KEY 	(eventID, trackID)   REFERENCES  Event
+	FOREIGN KEY 	(teamID)    REFERENCES  Team
 );
 
 CREATE TABLE PitCrew (
@@ -127,8 +120,7 @@ CREATE TABLE DriveIn (
 	trackID 		INTEGER,
 	PRIMARY KEY		(athleteID, eventID, trackID),
 	FOREIGN KEY     (athleteID) 		REFERENCES Athlete,
-	FOREIGN KEY     (eventID, trackId) 	REFERENCES Event(eventID, trackId),
-	FOREIGN KEY     (trackID)   		REFERENCES Track
+	FOREIGN KEY     (eventID, trackId) 	REFERENCES Event(eventID, trackId)
 );
 
 CREATE TABLE Exhibition (
