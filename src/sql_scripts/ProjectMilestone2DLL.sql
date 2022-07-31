@@ -39,7 +39,7 @@ CREATE TABLE TrackZipCode (
 
 CREATE TABLE Team (
 	teamID 			INTEGER,
-	directorID 		INTEGER,
+	directorID 		INTEGER         NOT NULL,
 	teamName 		CHAR(50),
 	startDate 		DATE,
 	endDate 		DATE,
@@ -68,19 +68,21 @@ CREATE TABLE Track (
 	length      	FLOAT,
 	addressNumber   INTEGER,
 	street      	CHAR(80),
-	zipCode  		CHAR(50),
+	zipCode  		CHAR(50)    NOT NULL,
 	PRIMARY KEY 	(trackID),
 	FOREIGN KEY 	(zipCode)   REFERENCES TrackZipCode
 );
 
 CREATE TABLE Event (
 	eventID     	INTEGER,
-	trackID			INTEGER,
+	trackID			INTEGER     NOT NULL,
 	date        	DATE,
 	name        	CHAR(50),
 	laps        	INTEGER,
 	PRIMARY KEY 	(eventID, trackID),
 	FOREIGN KEY 	(trackID)   REFERENCES Track
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
 CREATE TABLE SeasonRace (
@@ -95,7 +97,7 @@ CREATE TABLE SeasonRace (
 CREATE TABLE Car (
 	carID       	INTEGER,
 	mileage     	INTEGER,
-	carModel		CHAR(50),
+	carModel		CHAR(50)    NOT NULL,
 	teamID		    INTEGER,
 	PRIMARY KEY     (carID),
 	FOREIGN KEY 	(carModel)  REFERENCES  CarModel,
@@ -133,9 +135,9 @@ CREATE TABLE Exhibition (
 
 CREATE TABLE Results (
 	resultID        INTEGER,
-	athleteID       INTEGER,
-	eventID         INTEGER,
-	trackID         INTEGER,
+	athleteID       INTEGER             NOT NULL,
+	eventID         INTEGER             NOT NULL,
+	trackID         INTEGER             NOT NULL,
 	position        INTEGER,
 	bestPitStop     TIME,
 	bestLap         TIME,
@@ -147,10 +149,12 @@ CREATE TABLE Results (
 
 CREATE TABLE LapTime (
 	lapNumber       INTEGER,
-	resultID        INTEGER,
+	resultID        INTEGER         NOT NULL,
 	time            TIME,
 	PRIMARY KEY     (lapNumber, resultID),
-	FOREIGN KEY     (resultID)  REFERENCES Results
+	FOREIGN KEY     (resultID)      REFERENCES Results
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
 CREATE TABLE SponsorsTeam (
@@ -188,5 +192,6 @@ CREATE TABLE operate (
 	PRIMARY KEY 	(carID, eventID, trackID, athleteID),
 	FOREIGN KEY	    (carID)	            REFERENCES Car,
 	FOREIGN KEY	    (athleteID)         REFERENCES Athlete,
-	FOREIGN KEY	    (eventID, trackID)  REFERENCES Event(eventID, trackID)
+	FOREIGN KEY	    (eventID, trackID)  REFERENCES Event(eventID, trackID),
+    UNIQUE(athleteID, eventID, trackID)
 );
