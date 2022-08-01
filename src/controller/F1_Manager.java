@@ -24,6 +24,7 @@ public class F1_Manager implements LoginWindowDelegate {
         if (didConnect) {
             // Once connected, remove login window and start text transaction flow
             loginWindow.dispose();
+            dbHandler.databaseSetup();
 
         } else {
             loginWindow.handleLoginFailed();
