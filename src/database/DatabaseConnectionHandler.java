@@ -1,6 +1,7 @@
 package database;
 
 import model.Entity.SponsorModel;
+import model.Entity.TrackModel;
 import util.PrintablePreparedStatement;
 
 import java.sql.Connection;
@@ -59,7 +60,6 @@ public class DatabaseConnectionHandler {
             return false;
         }
     }
-
     public void insertSponsor(SponsorModel model) {
         try {
             String query = "INSERT INTO sponsor VALUES (?,?)";
@@ -108,6 +108,26 @@ public class DatabaseConnectionHandler {
         insertSponsor(sponsor3);
         insertSponsor(sponsor4);
         insertSponsor(sponsor5);
+
+        dropTrackTableIfExists();
+
+        try {
+            String query = "CREATE TABLE track (trackID INTEGER PRIMARY KEY, " +
+                    "trackName CHAR(80), " +
+                    "length FLOAT, " +
+                    "addressNumber INTEGER, " +
+                    "street CHAR(80), " +
+                    "zipCode CHAR(50) NOT NULL)";
+                    // no foreign key reference to a table that doesn't exist
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+        TrackModel track1 = new TrackModel(1, "test track", 100, 1234, "test street", "test zip");
+        insertTrack(track1);
     }
 
     private void dropSponsorTableIfExists() {
@@ -152,6 +172,46 @@ public class DatabaseConnectionHandler {
         }
 
         return result.toArray(new SponsorModel[result.size()]);
+    }
+    public void insertTrack(TrackModel track) {
+        try {
+            String query = "INSERT INTO track VALUES (?,?,?,?,?,?)";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setInt(1, track.getTrackID());
+            ps.setString(2, track.getTrackName());
+            ps.setFloat(3, track.getLength());
+            ps.setInt(4, track.getAddressNumber());
+            ps.setString(5, track.getStreet());
+            ps.setString(6, track.getZipCode());
+
+            ps.executeUpdate();
+            connection.commit();
+
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+    }
+
+    private void dropTrackTableIfExists() {
+        try {
+            String query = "select table_name from user_tables";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                if(rs.getString(1).toLowerCase().equals("track")) {
+                    ps.execute("DROP TABLE track");
+                    break;
+                }
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
     }
 
 }
