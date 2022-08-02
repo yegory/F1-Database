@@ -133,9 +133,9 @@ CREATE TABLE Exhibition (
 
 CREATE TABLE Results (
 	resultID        INTEGER,
-	athleteID       INTEGER             NOT NULL,
-	eventID         INTEGER             NOT NULL,
-	trackID         INTEGER             NOT NULL,
+	athleteID       INTEGER,
+	eventID         INTEGER,
+	trackID         INTEGER,
 	driverPos       INTEGER,
 	bestPitStop     TIME,
 	bestLap         TIME,
