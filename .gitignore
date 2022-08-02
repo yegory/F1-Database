@@ -10,6 +10,7 @@ target/
 ## IDE
 ##############################
 
+.idea/
 .idea_modules/
 .settings/
 .vscode/
