@@ -76,13 +76,11 @@ CREATE TABLE Track (
 CREATE TABLE Event (
 	eventID     	INTEGER,
 	trackID			INTEGER     NOT NULL,
-	date        	DATE,
-	name        	CHAR(50),
+	eventDate       DATE,
+	eventName       CHAR(50),
 	laps        	INTEGER,
 	PRIMARY KEY 	(eventID, trackID),
 	FOREIGN KEY 	(trackID)   REFERENCES Track
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
 );
 
 CREATE TABLE SeasonRace (
@@ -106,7 +104,7 @@ CREATE TABLE Car (
 
 CREATE TABLE PitCrew (
 	pitCrewID     	INTEGER,
-	role          	CHAR(20),
+	pitRole          	CHAR(20),
 	firstName     	CHAR(50),
 	lastName      	CHAR(50),
 	teamID        	INTEGER,
@@ -138,23 +136,21 @@ CREATE TABLE Results (
 	athleteID       INTEGER             NOT NULL,
 	eventID         INTEGER             NOT NULL,
 	trackID         INTEGER             NOT NULL,
-	position        INTEGER,
+	driverPos       INTEGER,
 	bestPitStop     TIME,
 	bestLap         TIME,
 	PRIMARY KEY     (resultID),
 	FOREIGN KEY     (athleteID)         REFERENCES Athlete,
 	FOREIGN KEY     (eventID, trackID)  REFERENCES Event(eventID, trackID),
-	FOREIGN KEY     (position)          REFERENCES ResultsScoring
+	FOREIGN KEY     (driverPos)         REFERENCES ResultsScoring
 );
 
 CREATE TABLE LapTime (
 	lapNumber       INTEGER,
 	resultID        INTEGER         NOT NULL,
-	time            TIME,
+	lapTime         TIME,
 	PRIMARY KEY     (lapNumber, resultID),
 	FOREIGN KEY     (resultID)      REFERENCES Results
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
 );
 
 CREATE TABLE SponsorsTeam (
