@@ -1,8 +1,9 @@
 package database;
 
-import model.Entity.SponsorModel;
 import model.Entity.TrackModel;
 import util.PrintablePreparedStatement;
+
+import model.Entity.SponsorModel;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -60,6 +61,7 @@ public class DatabaseConnectionHandler {
             return false;
         }
     }
+
     public void insertSponsor(SponsorModel model) {
         try {
             String query = "INSERT INTO sponsor VALUES (?,?)";
@@ -88,7 +90,7 @@ public class DatabaseConnectionHandler {
     public void databaseSetup() {
         dropSponsorTableIfExists();
 
-            try {
+        try {
             String query = "CREATE TABLE Sponsor(sponsorID INTEGER,name CHAR(50), PRIMARY KEY (sponsorID))";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.executeUpdate();
@@ -118,7 +120,7 @@ public class DatabaseConnectionHandler {
                     "addressNumber INTEGER, " +
                     "street CHAR(80), " +
                     "zipCode CHAR(50) NOT NULL)";
-                    // no foreign key reference to a table that doesn't exist
+            // no foreign key reference to a table that doesn't exist
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.executeUpdate();
             ps.close();
@@ -173,6 +175,7 @@ public class DatabaseConnectionHandler {
 
         return result.toArray(new SponsorModel[result.size()]);
     }
+
     public void insertTrack(TrackModel track) {
         try {
             String query = "INSERT INTO track VALUES (?,?,?,?,?,?)";
