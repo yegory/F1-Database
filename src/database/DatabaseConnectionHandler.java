@@ -3,10 +3,14 @@ package database;
 import model.Entity.TrackModel;
 import util.PrintablePreparedStatement;
 
+import model.Entity.SponsorModel;
+import util.PrintablePreparedStatement;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * !!! Got this class from example project, just playing around with the code !!!
@@ -32,6 +36,16 @@ public class DatabaseConnectionHandler {
         }
     }
 
+    public void close() {
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+    }
+
     public boolean login(String username, String password) {
         try {
             if (connection != null) {
@@ -48,6 +62,101 @@ public class DatabaseConnectionHandler {
             return false;
         }
     }
+
+    public void insertSponsor(SponsorModel model) {
+        try {
+            String query = "INSERT INTO sponsor VALUES (?,?)";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setInt(1, model.getSponsorID());
+            ps.setString(2, model.getName());
+
+            ps.executeUpdate();
+            connection.commit();
+
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+    }
+
+    private void rollbackConnection() {
+        try  {
+            connection.rollback();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+    }
+
+    public void databaseSetup() {
+        dropSponsorTableIfExists();
+
+            try {
+            String query = "CREATE TABLE Sponsor(sponsorID INTEGER,name CHAR(50), PRIMARY KEY (sponsorID))";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+        SponsorModel sponsor1 = new SponsorModel(1, "DHL");
+        SponsorModel sponsor2 = new SponsorModel(2, "Crypto.com");
+        SponsorModel sponsor3 = new SponsorModel(3, "Heineken N.V.");
+        SponsorModel sponsor4 = new SponsorModel(4, "Rolex Watch Co. Ltd");
+        SponsorModel sponsor5 = new SponsorModel(5, "Amazon Web Services, Inc.");
+
+        insertSponsor(sponsor1);
+        insertSponsor(sponsor2);
+        insertSponsor(sponsor3);
+        insertSponsor(sponsor4);
+        insertSponsor(sponsor5);
+    }
+
+    private void dropSponsorTableIfExists() {
+        try {
+            String query = "select table_name from user_tables";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                if(rs.getString(1).toLowerCase().equals("sponsor")) {
+                    ps.execute("DROP TABLE sponsor");
+                    break;
+                }
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+    }
+
+    public SponsorModel[] getBranchInfo() {
+        ArrayList<SponsorModel> result = new ArrayList<SponsorModel>();
+
+        try {
+            String query = "SELECT * FROM sponsor";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                SponsorModel model = new SponsorModel(
+                        rs.getInt("sponsorID"),
+                        rs.getString("name"));
+                result.add(model);
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+        return result.toArray(new SponsorModel[result.size()]);
+    }
+
 
     public void databaseSetup() {
         dropTrackTableIfExists();
