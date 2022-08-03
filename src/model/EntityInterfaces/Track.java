@@ -7,5 +7,4 @@ public interface Track {
     int getAddressNumber();
     String getStreet();
     String getZipCode();
-
 }
