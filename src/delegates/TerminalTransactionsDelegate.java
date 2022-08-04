@@ -1,6 +1,6 @@
 package delegates;
 
-import model.Entity.*;
+import model.SponsorModel;
 
 /**
  *

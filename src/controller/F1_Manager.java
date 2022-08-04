@@ -3,7 +3,7 @@ package controller;
 import database.DatabaseConnectionHandler;
 import delegates.LoginWindowDelegate;
 import delegates.TerminalTransactionsDelegate;
-import model.Entity.SponsorModel;
+import model.SponsorModel;
 import ui.LoginWindow;
 import ui.TerminalTransactions;
 

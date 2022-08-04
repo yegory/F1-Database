@@ -1,6 +1,6 @@
 package database;
 
-import model.EntityInterfaces.Director;
+import model.Director;
 import util.PrintablePreparedStatement;
 
 import java.sql.Connection;
@@ -11,21 +11,19 @@ import java.util.ArrayList;
 import static database.DatabaseConnectionHandler.EXCEPTION_TAG;
 import static database.DatabaseConnectionHandler.WARNING_TAG;
 
-public class DirectorHandler {
-    private Connection connection;
+public class DirectorHandler extends DatabaseConnectionHandler {
 
-    public DirectorHandler(Connection connection) {
-        this.connection = connection;
+    public DirectorHandler() {
+
     }
 
     public void insertDirector(Director dir) {
         try {
             String query = "INSERT INTO director VALUES (?,?,?)";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.setInt(1, dir.getDirectorID());
-            ps.setString(2, dir.getFirstName());
-            ps.setString(3, dir.getLastName());
-
+            ps.setInt(1, dir.directorID());
+            ps.setString(2, dir.firstName());
+            ps.setString(3, dir.lastName());
             ps.executeUpdate();
             connection.commit();
 
@@ -40,15 +38,14 @@ public class DirectorHandler {
         try {
             String query = "DELETE FROM director WHERE directorID = ?";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.setInt(1, dir.getDirectorID());
+            ps.setInt(1, dir.directorID());
 
             int rowCount = ps.executeUpdate();
             if (rowCount == 0) {
-                System.out.println(WARNING_TAG + " Branch " + dir.getDirectorID() + " does not exist!");
+                System.out.println(WARNING_TAG + " Branch " + dir.directorID() + " does not exist!");
             }
 
             connection.commit();
-
             ps.close();
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
@@ -58,15 +55,16 @@ public class DirectorHandler {
 
     public void updateDirector(Director dir) {
         try {
-            String query = "UPDATE director SET directorID = ?, firstName = ?, lastName = ? WHERE branch_id = ?";
+            String query = "UPDATE director SET directorID = ?, firstName = ?, lastName = ? WHERE directorID = ?";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.setInt(1, dir.getDirectorID());
-            ps.setString(2, dir.getFirstName());
-            ps.setString(3, dir.getLastName());
+            ps.setInt(1, dir.directorID());
+            ps.setString(2, dir.firstName());
+            ps.setString(3, dir.lastName());
+            ps.setInt(4, dir.directorID());
 
             int rowCount = ps.executeUpdate();
             if (rowCount == 0) {
-                System.out.println(WARNING_TAG + " Branch " + dir.getDirectorID() + " does not exist!");
+                System.out.println(WARNING_TAG + " Director " + dir.directorID() + " does not exist!");
             }
 
             connection.commit();
@@ -78,6 +76,7 @@ public class DirectorHandler {
         }
     }
 
+    /*
     public ResultSet selectDirector(ArrayList<String> attributes, String criteria) {
         ResultSet rs = null;
         try {
@@ -91,9 +90,11 @@ public class DirectorHandler {
         return rs;
     }
 
+
     public ResultSet projectDirector(ArrayList<String> attributes) {
         return selectDirector(attributes, "");
     }
+    */
 
     private String selectQueryBuilder(String tableName, ArrayList<String> attributes, String criteria) {
         String query = "";
@@ -113,13 +114,5 @@ public class DirectorHandler {
         }
 
         return query;
-    }
-
-    private void rollbackConnection() {
-        try  {
-            connection.rollback();
-        } catch (SQLException e) {
-            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-        }
     }
 }

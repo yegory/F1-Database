@@ -1,9 +1,9 @@
 package database;
 
-import model.Entity.TrackModel;
+import model.TrackModel;
 import util.PrintablePreparedStatement;
 
-import model.Entity.SponsorModel;
+import model.SponsorModel;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -24,7 +24,8 @@ public class DatabaseConnectionHandler {
     public static final String EXCEPTION_TAG = "[EXCEPTION]";
     public static final String WARNING_TAG = "[WARNING]";
 
-    private Connection connection = null;
+    protected Connection connection = null;
+    private QueryBuilder qb;
 
     public DatabaseConnectionHandler() {
         // Load the Oracle JDBC driver
@@ -33,6 +34,8 @@ public class DatabaseConnectionHandler {
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
+
+        qb = new QueryBuilder();
     }
 
     public void close() {
@@ -79,7 +82,7 @@ public class DatabaseConnectionHandler {
         }
     }
 
-    private void rollbackConnection() {
+    protected void rollbackConnection() {
         try  {
             connection.rollback();
         } catch (SQLException e) {
@@ -209,6 +212,21 @@ public class DatabaseConnectionHandler {
                     break;
                 }
             }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+    }
+
+    public void join(String tableNameA, String tableNameB, String criteria) {
+        try {
+            String query = qb.buildJoin(tableNameA, tableNameB, criteria);
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+
+            // do something with result set
 
             rs.close();
             ps.close();

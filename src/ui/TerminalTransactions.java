@@ -1,7 +1,7 @@
 package ui;
 
 import delegates.TerminalTransactionsDelegate;
-import model.Entity.SponsorModel;
+import model.SponsorModel;
 
 import java.io.BufferedReader;
 import java.io.IOException;
