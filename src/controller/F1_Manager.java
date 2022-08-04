@@ -1,18 +1,25 @@
 package controller;
 
 import database.DatabaseConnectionHandler;
+import database.DirectorHandler;
 import delegates.LoginWindowDelegate;
+import model.Director;
 import delegates.TerminalTransactionsDelegate;
 import model.Entity.SponsorModel;
 import ui.HomeWindow;
+import ui.HomeWindow;
 import ui.LoginWindow;
 
-public class F1_Manager implements LoginWindowDelegate, TerminalTransactionsDelegate {
+import java.sql.Array;
+import java.util.ArrayList;
+
+public class F1_Manager implements LoginWindowDelegate {
     private DatabaseConnectionHandler dbHandler = null;
+    // private DirectorHandler directorHandler = null;
     private LoginWindow loginWindow = null;
 
     public F1_Manager() {
-        dbHandler = new DatabaseConnectionHandler();
+        dbHandler = DatabaseConnectionHandler.getHandler();
     }
 
     @Override
@@ -27,11 +34,26 @@ public class F1_Manager implements LoginWindowDelegate, TerminalTransactionsDele
         if (didConnect) {
             // Once connected, remove login window and start text transaction flow
             loginWindow.dispose();
+            DirectorHandler dh = dbHandler.getDirectorHandler();
 
+            Director testDir = new Director(50, "testFname", "testLname");
+            dh.insertDirector(testDir);
+            Director testDir2 = new Director(50, "", "");
+            //dh.deleteDirector(testDir2);
+            Director testDir3 = new Director(50, "updateTest", "updateTest2");
+            dh.updateDirector(testDir3);
+            dbHandler.join("DIRECTOR", "PITCREW", "DIRECTOR.directorID = PITCREW.pitcrewID");
+            ArrayList<String> attributes = new ArrayList<>();
+            attributes.add("FIRSTNAME");
+            attributes.add("LASTNAME");
+            attributes.add("ATHLETEID");
+            attributes.add("TEAMID");
+            attributes.add("DOB");
+            attributes.add("NRACES");
+            attributes.add("STARTDATE");
+            Object[][] array = dbHandler.project("ATHLETE", attributes);
+            // System.out.println(array);
             HomeWindow hw = new HomeWindow(this);
-//            TerminalTransactions transaction = new TerminalTransactions();
-//            transaction.setupDatabase(this);
-//            transaction.showMainMenu(this);
 
         } else {
             loginWindow.handleLoginFailed();
@@ -49,51 +71,5 @@ public class F1_Manager implements LoginWindowDelegate, TerminalTransactionsDele
     public static void main(String args[]) {
         F1_Manager f1 = new F1_Manager();
         f1.start();
-    }
-
-    @Override
-    public void databaseSetup() {
-        dbHandler.databaseSetup();
-    }
-
-    @Override
-    public void deleteSponsor(int sponsorID) {
-
-    }
-
-    @Override
-    public void insertSponsor(SponsorModel model) {
-        dbHandler.insertSponsor(model);
-    }
-
-    @Override
-    public void showSponsors() {
-        SponsorModel[] models = dbHandler.getBranchInfo();
-
-        for (int i = 0; i < models.length; i++) {
-            SponsorModel model = models[i];
-
-            // simplified output formatting; truncation may occur
-            System.out.printf("%-10.10s", model.getSponsorID());
-            if (model.getName() == null) {
-                System.out.printf("%-20.20s", " ");
-            } else {
-                System.out.printf("%-20.20s", model.getName());
-            }
-            System.out.println();
-        }
-    }
-
-    @Override
-    public void updateSponsor(int sponsorID, String newName) {
-
-    }
-
-    @Override
-    public void terminalTransactionsFinished() {
-        dbHandler.close();
-        dbHandler = null;
-
-        System.exit(0);
     }
 }

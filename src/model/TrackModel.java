@@ -1,7 +1,6 @@
-package model.Entity;
-import model.EntityInterfaces.Track;
+package model;
 
-public class TrackModel implements Track {
+public class TrackModel {
     private final int trackID;
     private final String trackName;
     private final int length;
@@ -17,32 +16,30 @@ public class TrackModel implements Track {
         this.street = street;
         this.zipCode = zipCode;
     }
-    @Override
+
     public int getTrackID() {
         return trackID;
     }
 
-    @Override
+
     public String getTrackName() {
         return trackName;
     }
 
-    @Override
     public float getLength() {
         return length;
     }
 
-    @Override
+
     public int getAddressNumber() {
         return addressNumber;
     }
 
-    @Override
+
     public String getStreet() {
         return street;
     }
 
-    @Override
     public String getZipCode() {
         return zipCode;
     }
