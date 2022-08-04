@@ -6,14 +6,16 @@ import delegates.LoginWindowDelegate;
 import model.Director;
 import ui.LoginWindow;
 
+import java.sql.Array;
+import java.util.ArrayList;
+
 public class F1_Manager implements LoginWindowDelegate {
     private DatabaseConnectionHandler dbHandler = null;
-    private DirectorHandler directorHandler = null;
+    // private DirectorHandler directorHandler = null;
     private LoginWindow loginWindow = null;
 
     public F1_Manager() {
         dbHandler = DatabaseConnectionHandler.getHandler();
-        directorHandler = new DirectorHandler(dbHandler.getConnection());
     }
 
     @Override
@@ -28,19 +30,25 @@ public class F1_Manager implements LoginWindowDelegate {
         if (didConnect) {
             // Once connected, remove login window and start text transaction flow
             loginWindow.dispose();
+            DirectorHandler dh = dbHandler.getDirectorHandler();
 
-            /*
-            TerminalTransactions transaction = new TerminalTransactions();
-            transaction.setupDatabase(this);
-            transaction.showMainMenu(this);
-             */
             Director testDir = new Director(50, "testFname", "testLname");
-            directorHandler.insertDirector(testDir);
+            dh.insertDirector(testDir);
             Director testDir2 = new Director(50, "", "");
-            //directorHandler.deleteDirector(testDir2);
+            //dh.deleteDirector(testDir2);
             Director testDir3 = new Director(50, "updateTest", "updateTest2");
-            directorHandler.updateDirector(testDir3);
+            dh.updateDirector(testDir3);
             dbHandler.join("DIRECTOR", "PITCREW", "DIRECTOR.directorID = PITCREW.pitcrewID");
+            ArrayList<String> attributes = new ArrayList<>();
+            attributes.add("FIRSTNAME");
+            attributes.add("LASTNAME");
+            attributes.add("ATHLETEID");
+            attributes.add("TEAMID");
+            attributes.add("DOB");
+            attributes.add("NRACES");
+            attributes.add("STARTDATE");
+            Object[][] array = dbHandler.project("ATHLETE", attributes);
+            // System.out.println(array);
 
         } else {
             loginWindow.handleLoginFailed();

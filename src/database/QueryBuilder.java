@@ -1,7 +1,5 @@
 package database;
 
-import model.Entity;
-
 import java.util.ArrayList;
 
 public class QueryBuilder {
@@ -15,21 +13,19 @@ public class QueryBuilder {
         if (attributes.isEmpty()) {
             query += "* ";
         } else {
-            for (String attribute : attributes) {
-                query += attribute + " ";
+            query += attributes.get(0);
+            for (int i = 1; i < attributes.size(); i++) {
+                query += ", " + attributes.get(i);
             }
+
         }
-        query += "FROM " + tableName;
+        query += " FROM " + tableName;
 
         if (!criteria.isEmpty()) {
             query += " WHERE " + criteria;
         }
 
         return query;
-    }
-
-    public String buildProject(String tableName, ArrayList<String> attributes) {
-        return buildSelect(tableName, attributes, "");
     }
 
     public String buildJoin(String tableNameA, String tableNameB, String criteria) {

@@ -13,10 +13,13 @@ public class DirectorHandler {
 
     private Connection connection;
 
-    public DirectorHandler(Connection connection) {
-        this.connection = connection;
+    public DirectorHandler() {
     }
 
+    private void updateConnection() {
+        DatabaseConnectionHandler dbHandler = DatabaseConnectionHandler.getHandler();
+        this.connection = dbHandler.getConnection();
+    }
 
     public void insertDirector(Director dir) {
         updateConnection();
@@ -34,11 +37,6 @@ public class DirectorHandler {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
             DatabaseConnectionHandler.getHandler().rollbackConnection();
         }
-    }
-
-    private void updateConnection() {
-        DatabaseConnectionHandler dbHandler = DatabaseConnectionHandler.getHandler();
-        this.connection = dbHandler.getConnection();
     }
 
     public void deleteDirector(Director dir) {
@@ -84,46 +82,4 @@ public class DirectorHandler {
             DatabaseConnectionHandler.getHandler().rollbackConnection();
         }
     }
-
-    /*
-    public ResultSet selectDirector(ArrayList<String> attributes, String criteria) {
-        ResultSet rs = null;
-        try {
-            String query = selectQueryBuilder("Director", attributes, criteria);
-            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            rs = ps.executeQuery();
-
-        } catch (SQLException e) {
-            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-        }
-        return rs;
-    }
-
-
-    public ResultSet projectDirector(ArrayList<String> attributes) {
-        return selectDirector(attributes, "");
-    }
-
-
-    private String selectQueryBuilder(String tableName, ArrayList<String> attributes, String criteria) {
-        String query = "";
-        query += "SELECT ";
-
-        if (attributes.isEmpty()) {
-            query += "* ";
-        } else {
-            for (String attribute : attributes) {
-                query += attribute + " ";
-            }
-        }
-        query += "FROM " + tableName;
-
-        if (!criteria.isEmpty()) {
-            query += " WHERE " + criteria;
-        }
-
-        return query;
-    }
-
-     */
 }

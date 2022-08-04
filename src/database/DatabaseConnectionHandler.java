@@ -2,6 +2,8 @@ package database;
 
 import util.PrintablePreparedStatement;
 
+import javax.print.attribute.standard.ReferenceUriSchemesSupported;
+import java.lang.reflect.Array;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -18,8 +20,11 @@ public class DatabaseConnectionHandler {
     public static final String EXCEPTION_TAG = "[EXCEPTION]";
     public static final String WARNING_TAG = "[WARNING]";
 
-    protected Connection connection = null;
+    private DirectorHandler directorHandler;
     private QueryBuilder qb;
+
+    private Connection connection = null;
+
 
     private static DatabaseConnectionHandler dbHandler;
 
@@ -31,7 +36,13 @@ public class DatabaseConnectionHandler {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
 
+        initiateTableHandlers();
         qb = new QueryBuilder();
+    }
+
+    private void initiateTableHandlers() {
+        directorHandler = new DirectorHandler();
+        // TODO: make the rest of the table handler classes
     }
 
     public static DatabaseConnectionHandler getHandler() {
@@ -77,44 +88,46 @@ public class DatabaseConnectionHandler {
         }
     }
 
-    public void select(String tableName, ArrayList<String> attributes, String criteria) {
+    public Object[][] select(String tableName, ArrayList<String> attributes, String criteria) {
+        Object[][] results = null;
         try {
             String query = qb.buildSelect(tableName, attributes, criteria);
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ResultSet rs = ps.executeQuery();
-
-            // do something with result set
-
+            results = generateArrayFromSet(rs);
 
             rs.close();
             ps.close();
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
+
+        print2DArray(results);
+        return results;
     }
 
-    public void project(String tableName, ArrayList<String> attributes) {
-        try {
-            String query = qb.buildProject(tableName, attributes);
-            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ResultSet rs = ps.executeQuery();
-
-            // do something with result set
-
-            rs.close();
-            ps.close();
-        } catch (SQLException e) {
-            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+    private void print2DArray(Object[][] outputData) {
+        for (int i = 0; i < outputData.length; i++) {
+            for (int j = 0; j < outputData[0].length; j++) {
+                System.out.print(outputData[i][j].toString() + " ");
+            }
+            System.out.println("");
         }
     }
 
+    public Object[][] project(String tableName, ArrayList<String> attributes) {
+        return select(tableName, attributes, "");
+    }
 
-    public void join(String tableNameA, String tableNameB, String criteria) {
+
+    public Object[][] join(String tableNameA, String tableNameB, String criteria) {
+        Object[][] results = null;
+
         try {
             String query = qb.buildJoin(tableNameA, tableNameB, criteria);
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ResultSet rs = ps.executeQuery();
-
+            results = generateArrayFromSet(rs);
             // do something with result set
             // call to Matts function to parse resultset
 
@@ -123,159 +136,56 @@ public class DatabaseConnectionHandler {
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
+        print2DArray(results);
+        return results;
+    }
+
+    private Object[][] generateArrayFromSet(ResultSet rs) {
+        ArrayList<ArrayList<Object>> data = new ArrayList<>();
+        try {
+            ResultSetMetaData md = rs.getMetaData();
+
+            ArrayList<Object> labels = new ArrayList<>();
+            for (int i = 1; i <= md.getColumnCount(); i++) {
+                labels.add(md.getColumnName(i));
+            }
+            data.add(labels);
+
+            while (rs.next()) {
+                ArrayList<Object> dataRow = new ArrayList<>();
+                for (int i = 1; i <= md.getColumnCount(); i++) {
+                    dataRow.add(rs.getObject(i));
+                }
+                data.add(dataRow);
+            }
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+        return convertToArray(data);
+    }
+
+    private Object[][] convertToArray(ArrayList<ArrayList<Object>> data) {
+        int outputWidth = data.get(0).size();
+        int outputHeight = data.size();
+
+        Object[][] outputData = new Object[outputHeight][outputWidth];
+
+        for (int i = 0; i < outputHeight; i++) {
+            ArrayList<Object> tempRow = data.get(i);
+            for (int j = 0; j < outputWidth; j++) {
+                outputData[i][j] = tempRow.get(j);
+            }
+        }
+
+        return outputData;
     }
 
     public Connection getConnection() {
         return connection;
     }
 
-    /*
-        private void dropSponsorTableIfExists() {
-        try {
-            String query = "select table_name from user_tables";
-            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ResultSet rs = ps.executeQuery();
-
-            while(rs.next()) {
-                if(rs.getString(1).toLowerCase().equals("sponsor")) {
-                    ps.execute("DROP TABLE sponsor");
-                    break;
-                }
-            }
-
-            rs.close();
-            ps.close();
-        } catch (SQLException e) {
-            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-        }
+    public DirectorHandler getDirectorHandler() {
+        return directorHandler;
     }
-
-    public SponsorModel[] getBranchInfo() {
-        ArrayList<SponsorModel> result = new ArrayList<SponsorModel>();
-
-        try {
-            String query = "SELECT * FROM sponsor";
-            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ResultSet rs = ps.executeQuery();
-
-            while(rs.next()) {
-                SponsorModel model = new SponsorModel(
-                        rs.getInt("sponsorID"),
-                        rs.getString("name"));
-                result.add(model);
-            }
-
-            rs.close();
-            ps.close();
-        } catch (SQLException e) {
-            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-        }
-
-        return result.toArray(new SponsorModel[result.size()]);
-    }
-
-    private void dropTrackTableIfExists() {
-        try {
-            String query = "select table_name from user_tables";
-            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ResultSet rs = ps.executeQuery();
-
-            while(rs.next()) {
-                if(rs.getString(1).toLowerCase().equals("track")) {
-                    ps.execute("DROP TABLE track");
-                    break;
-                }
-            }
-
-            rs.close();
-            ps.close();
-        } catch (SQLException e) {
-            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-        }
-    }
-
-    public void insertTrack(TrackModel track) {
-        try {
-            String query = "INSERT INTO track VALUES (?,?,?,?,?,?)";
-            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.setInt(1, track.getTrackID());
-            ps.setString(2, track.getTrackName());
-            ps.setFloat(3, track.getLength());
-            ps.setInt(4, track.getAddressNumber());
-            ps.setString(5, track.getStreet());
-            ps.setString(6, track.getZipCode());
-
-            ps.executeUpdate();
-            connection.commit();
-
-            ps.close();
-        } catch (SQLException e) {
-            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-            rollbackConnection();
-        }
-    }
-
-        public void insertSponsor(SponsorModel model) {
-        try {
-            String query = "INSERT INTO sponsor VALUES (?,?)";
-            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.setInt(1, model.getSponsorID());
-            ps.setString(2, model.getName());
-
-            ps.executeUpdate();
-            connection.commit();
-
-            ps.close();
-        } catch (SQLException e) {
-            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-            rollbackConnection();
-        }
-    }
-
-    public void databaseSetup() {
-        dropSponsorTableIfExists();
-
-        try {
-            String query = "CREATE TABLE Sponsor(sponsorID INTEGER,name CHAR(50), PRIMARY KEY (sponsorID))";
-            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.executeUpdate();
-            ps.close();
-        } catch (SQLException e) {
-            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-        }
-
-        SponsorModel sponsor1 = new SponsorModel(1, "DHL");
-        SponsorModel sponsor2 = new SponsorModel(2, "Crypto.com");
-        SponsorModel sponsor3 = new SponsorModel(3, "Heineken N.V.");
-        SponsorModel sponsor4 = new SponsorModel(4, "Rolex Watch Co. Ltd");
-        SponsorModel sponsor5 = new SponsorModel(5, "Amazon Web Services, Inc.");
-
-        insertSponsor(sponsor1);
-        insertSponsor(sponsor2);
-        insertSponsor(sponsor3);
-        insertSponsor(sponsor4);
-        insertSponsor(sponsor5);
-
-        dropTrackTableIfExists();
-
-        try {
-            String query = "CREATE TABLE track (trackID INTEGER PRIMARY KEY, " +
-                    "trackName CHAR(80), " +
-                    "length FLOAT, " +
-                    "addressNumber INTEGER, " +
-                    "street CHAR(80), " +
-                    "zipCode CHAR(50) NOT NULL)";
-            // no foreign key reference to a table that doesn't exist
-            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.executeUpdate();
-            ps.close();
-        } catch (SQLException e) {
-            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-        }
-
-        TrackModel track1 = new TrackModel(1, "test track", 100, 1234, "test street", "test zip");
-        insertTrack(track1);
-    }
-     */
-
 }
