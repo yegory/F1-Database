@@ -4,8 +4,8 @@ import database.DatabaseConnectionHandler;
 import delegates.LoginWindowDelegate;
 import delegates.TerminalTransactionsDelegate;
 import model.Entity.SponsorModel;
+import ui.HomeWindow;
 import ui.LoginWindow;
-import ui.TerminalTransactions;
 
 public class F1_Manager implements LoginWindowDelegate, TerminalTransactionsDelegate {
     private DatabaseConnectionHandler dbHandler = null;
@@ -28,9 +28,10 @@ public class F1_Manager implements LoginWindowDelegate, TerminalTransactionsDele
             // Once connected, remove login window and start text transaction flow
             loginWindow.dispose();
 
-            TerminalTransactions transaction = new TerminalTransactions();
-            transaction.setupDatabase(this);
-            transaction.showMainMenu(this);
+            HomeWindow hw = HomeWindow.getInstance();
+//            TerminalTransactions transaction = new TerminalTransactions();
+//            transaction.setupDatabase(this);
+//            transaction.showMainMenu(this);
 
         } else {
             loginWindow.handleLoginFailed();

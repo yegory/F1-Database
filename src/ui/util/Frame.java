@@ -1,4 +1,4 @@
-package ui.HomePanel;
+package ui.util;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
