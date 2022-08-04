@@ -28,7 +28,7 @@ public class F1_Manager implements LoginWindowDelegate, TerminalTransactionsDele
             // Once connected, remove login window and start text transaction flow
             loginWindow.dispose();
 
-            HomeWindow hw = HomeWindow.getInstance();
+            HomeWindow hw = new HomeWindow(this);
 //            TerminalTransactions transaction = new TerminalTransactions();
 //            transaction.setupDatabase(this);
 //            transaction.showMainMenu(this);
@@ -82,7 +82,6 @@ public class F1_Manager implements LoginWindowDelegate, TerminalTransactionsDele
             }
             System.out.println();
         }
-
     }
 
     @Override

@@ -1,5 +1,6 @@
 package ui;
 
+import controller.F1_Manager;
 import ui.util.*;
 import ui.util.Button;
 import ui.util.Frame;
@@ -8,12 +9,15 @@ import javax.swing.*;
 import java.awt.*;
 
 public class HomeWindow {
-    private static HomeWindow homeWindow;
+
     private Frame frame;
     private JComboBox comboBox;
 
+    F1_Manager f1_manager = null;
 
-    private HomeWindow() {
+    public HomeWindow (F1_Manager f1_manager) {
+        this.f1_manager = f1_manager;
+
         frame = new Frame("Main Frame");
         frame.getContentPane().setBackground(new Color(175, 175, 175));
         frame.centreFrame();
@@ -28,9 +32,9 @@ public class HomeWindow {
         frame.add(buttonPanel);
 
         String[] modelClasses = {"Select table", "Athlete", "Car", "CarModel", "Director", "Sponsor",  "Event"};
-        new TableComboBox(buttonPanel, modelClasses);
+        TableComboBox combo = new TableComboBox(f1_manager, buttonPanel, modelClasses);
 
-        new Button(buttonPanel, "view");
+
         new Button(buttonPanel, "add");
         new Button(buttonPanel, "remove");
 
@@ -38,8 +42,7 @@ public class HomeWindow {
 
         tablePanel.setBackground(new Color(204, 218, 255));
         frame.add(tablePanel);
-        tablePanel.setBounds(0,50, frame.getWidth(),frame.getHeight()-50);
-
+        tablePanel.setBounds(0,50, frame.getWidth(),frame.getHeight() - 50);
 
 
         String[] columnNames = {"A", "B", "C"};
@@ -52,12 +55,5 @@ public class HomeWindow {
         new Table(tablePanel, columnNames, data, frame.getWidth()-10, frame.getHeight() - 50);
 
         frame.setVisible(true);
-    }
-
-    public static HomeWindow getInstance() {
-        if (homeWindow == null) {
-            homeWindow = new HomeWindow();
-        }
-        return homeWindow;
     }
 }
