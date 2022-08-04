@@ -23,6 +23,7 @@ drop table CARMODEL;
 drop table TEAM;
 drop table DIRECTOR;
 
+
 CREATE TABLE CarModel
 (
     carModel   CHAR(50),

@@ -4,20 +4,22 @@ import model.Director;
 import util.PrintablePreparedStatement;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import static database.DatabaseConnectionHandler.EXCEPTION_TAG;
 import static database.DatabaseConnectionHandler.WARNING_TAG;
 
-public class DirectorHandler extends DatabaseConnectionHandler {
+public class DirectorHandler {
 
-    public DirectorHandler() {
+    private Connection connection;
 
+    public DirectorHandler(Connection connection) {
+        this.connection = connection;
     }
 
+
     public void insertDirector(Director dir) {
+        updateConnection();
         try {
             String query = "INSERT INTO director VALUES (?,?,?)";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
@@ -30,11 +32,17 @@ public class DirectorHandler extends DatabaseConnectionHandler {
             ps.close();
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-            rollbackConnection();
+            DatabaseConnectionHandler.getHandler().rollbackConnection();
         }
     }
 
+    private void updateConnection() {
+        DatabaseConnectionHandler dbHandler = DatabaseConnectionHandler.getHandler();
+        this.connection = dbHandler.getConnection();
+    }
+
     public void deleteDirector(Director dir) {
+        updateConnection();
         try {
             String query = "DELETE FROM director WHERE directorID = ?";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
@@ -49,11 +57,12 @@ public class DirectorHandler extends DatabaseConnectionHandler {
             ps.close();
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-            rollbackConnection();
+            DatabaseConnectionHandler.getHandler().rollbackConnection();
         }
     }
 
     public void updateDirector(Director dir) {
+        updateConnection();
         try {
             String query = "UPDATE director SET directorID = ?, firstName = ?, lastName = ? WHERE directorID = ?";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
@@ -72,7 +81,7 @@ public class DirectorHandler extends DatabaseConnectionHandler {
             ps.close();
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-            rollbackConnection();
+            DatabaseConnectionHandler.getHandler().rollbackConnection();
         }
     }
 
@@ -94,7 +103,7 @@ public class DirectorHandler extends DatabaseConnectionHandler {
     public ResultSet projectDirector(ArrayList<String> attributes) {
         return selectDirector(attributes, "");
     }
-    */
+
 
     private String selectQueryBuilder(String tableName, ArrayList<String> attributes, String criteria) {
         String query = "";
@@ -115,4 +124,6 @@ public class DirectorHandler extends DatabaseConnectionHandler {
 
         return query;
     }
+
+     */
 }
