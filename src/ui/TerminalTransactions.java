@@ -1,7 +1,7 @@
 package ui;
 
 import delegates.TerminalTransactionsDelegate;
-import model.SponsorModel;
+import model.Sponsor;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -113,7 +113,7 @@ public class TerminalTransactions {
             name = null;
         }
 
-        SponsorModel model = new SponsorModel(sponsorID, name);
+        Sponsor model = new Sponsor(sponsorID, name);
         delegate.insertSponsor(model);
     }
 

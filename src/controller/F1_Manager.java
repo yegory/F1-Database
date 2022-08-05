@@ -6,7 +6,6 @@ import delegates.LoginWindowDelegate;
 import model.Director;
 import ui.LoginWindow;
 
-import java.sql.Array;
 import java.util.ArrayList;
 
 public class F1_Manager implements LoginWindowDelegate {

@@ -1,6 +1,6 @@
 package delegates;
 
-import model.SponsorModel;
+import model.Sponsor;
 
 /**
  *
@@ -9,7 +9,7 @@ public interface TerminalTransactionsDelegate {
     public void databaseSetup();
 
     public void deleteSponsor(int sponsorID);
-    public void insertSponsor(SponsorModel model);
+    public void insertSponsor(Sponsor model);
     public void showSponsors();
     public void updateSponsor(int sponsorID, String newName);
 
