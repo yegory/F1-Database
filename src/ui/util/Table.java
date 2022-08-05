@@ -12,7 +12,7 @@ public class Table extends DefaultTableModel {
     private DefaultTableModel dtm;
 
     public Table(JPanel parent, Object[] columnNames, Object[][] data, int width, int height) {
-        dtm = new DefaultTableModel(columnNames, 0);
+        dtm = new DefaultTableModel(columnNames, 10);
         table = new JTable(dtm);
         addRows(data);
         table.setBorder(new EtchedBorder(EtchedBorder.RAISED));
@@ -22,10 +22,15 @@ public class Table extends DefaultTableModel {
         parent.add(tableSP);
     }
 
-    public void deleteTable() {
+    public void clearTable() {
         dtm.setRowCount(0);
+        dtm.setColumnCount(0);
     }
-
+    public void addColumns(Object[][] data) {
+        for (int i=0; i<data[0].length; i++) {
+            dtm.addColumn(data[0][i].toString());
+        }
+    }
     public void addRows(Object[][] data) {
         for (Object[] o: data) {
             dtm.addRow(o);
