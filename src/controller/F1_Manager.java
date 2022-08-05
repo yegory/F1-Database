@@ -4,12 +4,10 @@ import database.DatabaseConnectionHandler;
 import database.DirectorHandler;
 import delegates.LoginWindowDelegate;
 import model.Director;
-import delegates.TerminalTransactionsDelegate;
-import model.Entity.SponsorModel;
-import ui.HomeWindow;
 import ui.HomeWindow;
 import ui.LoginWindow;
 
+import javax.xml.crypto.Data;
 import java.sql.Array;
 import java.util.ArrayList;
 
@@ -38,9 +36,9 @@ public class F1_Manager implements LoginWindowDelegate {
 
             Director testDir = new Director(50, "testFname", "testLname");
             dh.insertDirector(testDir);
-            Director testDir2 = new Director(50, "", "");
+            Director testDir2 = new Director(51, "", "");
             //dh.deleteDirector(testDir2);
-            Director testDir3 = new Director(50, "updateTest", "updateTest2");
+            Director testDir3 = new Director(52, "updateTest", "updateTest2");
             dh.updateDirector(testDir3);
             dbHandler.join("DIRECTOR", "PITCREW", "DIRECTOR.directorID = PITCREW.pitcrewID");
             ArrayList<String> attributes = new ArrayList<>();
@@ -58,6 +56,10 @@ public class F1_Manager implements LoginWindowDelegate {
         } else {
             loginWindow.handleLoginFailed();
         }
+    }
+
+    public DatabaseConnectionHandler getDbHandler() {
+        return dbHandler;
     }
 
     private void start() {

@@ -31,12 +31,6 @@ public class HomeWindow {
         buttonPanel.setLayout(new FlowLayout());
         frame.add(buttonPanel);
 
-        String[] modelClasses = {"Select table", "Athlete", "Car", "CarModel", "Director", "Sponsor",  "Event"};
-        TableComboBox combo = new TableComboBox(f1_manager, buttonPanel, modelClasses);
-
-
-        new Button(buttonPanel, "add");
-        new Button(buttonPanel, "remove");
 
         JPanel tablePanel = new JPanel();
 
@@ -45,15 +39,18 @@ public class HomeWindow {
         tablePanel.setBounds(0,50, frame.getWidth(),frame.getHeight() - 50);
 
 
-        String[] columnNames = {"A", "B", "C"};
+        String[] columnNames = {"A", "B", "C", "D"};
         Object[][] data = {
                 {"Moni", "adsad", 2},
                 {"Jhon", "ewrewr", 4},
                 {"Max", "zxczxc", 6},
                 {"Moni", "adsad", 2}};
 
-        new Table(tablePanel, columnNames, data, frame.getWidth()-10, frame.getHeight() - 50);
+        Table table = new Table(tablePanel, columnNames, data, frame.getWidth()-10, frame.getHeight() - 50);
 
+        TableComboBox combo = new TableComboBox(table, buttonPanel);
+        new Button(buttonPanel, "add");
+        new Button(buttonPanel, "remove");
         frame.setVisible(true);
     }
 }
