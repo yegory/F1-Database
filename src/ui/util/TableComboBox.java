@@ -20,6 +20,8 @@ public class TableComboBox extends JComboBox implements ActionListener {
     private final JPanel homeMiddlePanel;
     private final Table table;
     private AttributeCheckbox attributeCheckbox;
+    private ArrayList<String> selectedColumns;
+    private ArrayList<String> AllColumns; //all checkbox columns even if user checked off
     public TableComboBox(Table table, JPanel homeTopPanel, JPanel homeMiddlePanel) {
         this.table = table;
         this.homeTopPanel = homeTopPanel;
@@ -32,47 +34,9 @@ public class TableComboBox extends JComboBox implements ActionListener {
         comboBox.setMaximumRowCount(25);
         homeTopPanel.add(comboBox);
 
-        attributeCheckbox = new AttributeCheckbox(homeMiddlePanel);
-    }
-
-    public class AttributeCheckbox extends JCheckBox implements ActionListener {
-        private List<JCheckBox> checkBoxes;
-        private JPanel parentPanel;
-
-        public AttributeCheckbox(JPanel parent) {
-            parentPanel = parent;
-            checkBoxes = new ArrayList<>();
-        }
-
-        private void addCheckBox(String text) {
-            JCheckBox checkBox = new JCheckBox(text);
-            checkBox.addActionListener(this);
-            checkBox.setVisible(true);
-            parentPanel.add(checkBox);
-            checkBoxes.add(checkBox);
-        }
-        public void addCheckBoxes(ArrayList<String> cols) {
-            for (String attributeName: cols) {
-                addCheckBox(attributeName);
-            }
-
-
-        }
-
-        public void removeAllCheckBoxes() {
-            for (int i=0; i< checkBoxes.size(); i++) {
-                System.out.println(checkBoxes.get(i).getText());
-                homeMiddlePanel.remove(checkBoxes.get(i));
-            }
-            checkBoxes = new ArrayList<>();
-            homeMiddlePanel.repaint();
-            homeMiddlePanel.revalidate();
-        }
-
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-        }
+        attributeCheckbox = new AttributeCheckbox();
+        selectedColumns = new ArrayList<>();
+        AllColumns = new ArrayList<>();
     }
 
     @Override
@@ -82,63 +46,66 @@ public class TableComboBox extends JComboBox implements ActionListener {
                 modelClasses = Arrays.copyOfRange(modelClasses, 1, modelClasses.length);
                 comboBox.removeItem("Select table");
             }
-            if (comboBox.getSelectedItem() == "Directors")
-                handleDirectorView();
-            else if (comboBox.getSelectedItem() == "Athletes")
-                handleAthleteView();
-            else if (comboBox.getSelectedItem() == "Teams")
-                handleTeamView();
-            else if (comboBox.getSelectedItem() == "Cars")
-                handleCarView();
-            else if (comboBox.getSelectedItem() == "Car Models")
-                handleCarModelView();
-            else if (comboBox.getSelectedItem() == "Events")
-                handleEventView();
-
-            else if (comboBox.getSelectedItem() == "Pit Crew")
-                handlePitCrewView();
-
-            else if (comboBox.getSelectedItem() == "Results")
-                handleResultsView();
-            else if (comboBox.getSelectedItem() == "Lap Times")
-                handleLapTimeView();
-
-            else if (comboBox.getSelectedItem() == "Tracks")
-                handleTrackView();
-            else if (comboBox.getSelectedItem() == "Track zip codes")
-                handleTrackZipCodeView();
-
-
-            else if (comboBox.getSelectedItem() == "Drive In")
-                handleDriveInView();
-
-
-            else if (comboBox.getSelectedItem() == "Results scoring")
-                handleResultsScoringView();
-
-            else if (comboBox.getSelectedItem() == "Sponsors")
-                handleSponsorView();
-            else if (comboBox.getSelectedItem() == "Sponsor sponsors Team")
-                handleSponsorsTeamView();
-            else if (comboBox.getSelectedItem() == "Sponsor sponsors Event")
-                handleSponsorsEventView();
-
-
-            else if (comboBox.getSelectedItem() == "Practices")
-                handlePracticeView();
-            else if (comboBox.getSelectedItem() == "Season races")
-                handleSeasonRaceView();
-            else if (comboBox.getSelectedItem() == "Exhibitions")
-                handleExhibitionView();
-
-            else if (comboBox.getSelectedItem() == "Driver operates")
-                handleOperateView();
-            else {
-                System.out.println(comboBox.getSelectedItem() + " not in there");
-            }
+            SwitchCombo(comboBox.getSelectedItem().toString());
         }
     }
 
+
+
+    public class AttributeCheckbox extends JCheckBox implements ActionListener {
+        private List<JCheckBox> checkBoxes;
+        public AttributeCheckbox() {
+            checkBoxes = new ArrayList<>();
+        }
+
+        private void addCheckBox(String text) {
+            JCheckBox checkBox = new JCheckBox(text);
+            checkBox.addActionListener(this);
+            checkBox.setVisible(true);
+            if (inArrayHelper(selectedColumns, text) != -1)
+                checkBox.setSelected(true);
+            homeMiddlePanel.add(checkBox);
+            checkBoxes.add(checkBox);
+        }
+        public void addCheckBoxes(ArrayList<String> cols) {
+            for (String attributeName: cols)
+                addCheckBox(attributeName);
+        }
+
+        public void removeAllCheckBoxes() {
+            for (int i=0; i< checkBoxes.size(); i++) {
+                //System.out.println(checkBoxes.get(i).getText());
+                homeMiddlePanel.remove(checkBoxes.get(i));
+            }
+            checkBoxes = new ArrayList<>();
+            homeMiddlePanel.repaint();
+            homeMiddlePanel.revalidate();
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String checkBoxPressed = e.getActionCommand();
+            int index = inArrayHelper(selectedColumns, checkBoxPressed);
+
+            if (index == -1) { // checkbox column name was not in selectedColumn
+                selectedColumns.add(checkBoxPressed);
+            } else {
+                selectedColumns.remove(index);
+            }
+
+            handleTable(DetermineTable(comboBox.getSelectedItem().toString()), selectedColumns);
+        }
+    }
+
+    // returns index of String in array if found, else -1
+    private int inArrayHelper(ArrayList<String> arr, String text) {
+        for (int i=0; i<arr.size(); i++) {
+            if (arr.get(i) == text) {
+                return i;
+            }
+        }
+        return -1;
+    }
 //    private void print2DArray(Object[][] outputData) {
 //        for (int i = 0; i < outputData.length; i++) {
 //            for (int j = 0; j < outputData[0].length; j++) {
@@ -148,6 +115,9 @@ public class TableComboBox extends JComboBox implements ActionListener {
 //        }
 //    }
     private void handleTable(String table_name, ArrayList<String> columns) {
+        if (columns.size() == 0) {
+            System.out.println("ERROR");
+        }
         Object[][] result = DatabaseConnectionHandler.getHandler().project(table_name, columns);
         //print2DArray(result);
         int numberOfElementsInArray = result.length; // number of rows in result
@@ -158,17 +128,28 @@ public class TableComboBox extends JComboBox implements ActionListener {
         table.clearTable();
         table.addColumns(columns);
         table.addRows(rowData);
+
+        System.out.println("\n" + selectedColumns.size() + " selected columns");
+        for (String s: selectedColumns)
+            System.out.println(s);
+
+        System.out.println("\n " + AllColumns.size()+  " all");
+
+        for (String s: AllColumns)
+            System.out.println(s);
+        System.out.println("\ndone");
         attributeCheckbox.removeAllCheckBoxes();
-        attributeCheckbox.addCheckBoxes(columns);
+        attributeCheckbox.addCheckBoxes(AllColumns);
     }
 
 
     private void handleDirectorView() {
-
         ArrayList<String> cols = new ArrayList<>() {{
             add("directorID");
             add("firstName");
             add("lastName");}};
+        AllColumns = new ArrayList(cols);
+        selectedColumns = cols;
         handleTable("Director", cols);
     }
     private void handleAthleteView() {
@@ -181,6 +162,8 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("nRaces");
             add("startDate");
             add("endDate");}};
+        AllColumns = new ArrayList(cols);
+        selectedColumns = cols;
         handleTable("Athlete", cols);
     }
 
@@ -190,6 +173,8 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("mileage");
             add("carModel");
             add("teamID");}};
+        AllColumns = new ArrayList(cols);
+        selectedColumns = cols;
         handleTable("Car", cols);
     }
 
@@ -199,6 +184,8 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("weight");
             add("topSpeed");
             add("horsepower");}};
+        AllColumns = new ArrayList(cols);
+        selectedColumns = cols;
         handleTable("carModel", cols);
     }
 
@@ -209,6 +196,8 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("eventDate");
             add("eventName");
             add("laps");}};
+        AllColumns = new ArrayList(cols);
+        selectedColumns = cols;
         handleTable("Event", cols);
     }
 
@@ -220,6 +209,8 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("addressNumber");
             add("street");
             add("zipCode");}};
+        AllColumns = new ArrayList(cols);
+        selectedColumns = cols;
         handleTable("Track", cols);
     }
 
@@ -232,6 +223,8 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("teamID");
             add("startDate");
             add("endDate");}};
+        AllColumns = new ArrayList(cols);
+        selectedColumns = cols;
         handleTable("PitCrew", cols);
     }
 
@@ -242,6 +235,8 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("teamName");
             add("startDate");
             add("endDate");}};
+        AllColumns = new ArrayList(cols);
+        selectedColumns = cols;
         handleTable("Team", cols);
     }
     private void handleResultsView() {
@@ -253,6 +248,8 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("position");
             add("bestPitStop");
             add("bestLap");}};
+        AllColumns = new ArrayList(cols);
+        selectedColumns = cols;
         handleTable("Results", cols);
     }
 
@@ -261,12 +258,16 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("lapNumber");
             add("resultID");
             add("time");}};
+        AllColumns = new ArrayList(cols);
+        selectedColumns = cols;
         handleTable("LapTime", cols);
     }
     private void handleResultsScoringView() {
         ArrayList<String> cols = new ArrayList<>() {{
             add("position");
             add("points");}};
+        AllColumns = new ArrayList(cols);
+        selectedColumns = cols;
         handleTable("ResultsScoring", cols);
     }
     private void handleTrackZipCodeView() {
@@ -275,19 +276,25 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("city");
             add("country");
             add("province");}};
+        AllColumns = new ArrayList(cols);
+        selectedColumns = cols;
         handleTable("TrackZipCode", cols);
     }
     private void handleSponsorView() {
         ArrayList<String> cols = new ArrayList<>() {{
             add("sponsorID");
             add("name");}};
+        AllColumns = new ArrayList(cols);
+        selectedColumns = cols;
         handleTable("Sponsor", cols);
     }
     private void handlePracticeView() {
         ArrayList<String> cols = new ArrayList<>() {{
             add("eventID");
             add("trackID");
-            add("bestLap");;}};
+            add("bestLap");}};
+        AllColumns = new ArrayList(cols);
+        selectedColumns = cols;
         handleTable("Practice", cols);
     }
     private void handleSeasonRaceView() {
@@ -296,6 +303,8 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("trackID");
             add("availablePoints");
             add("winner");}};
+        AllColumns = new ArrayList(cols);
+        selectedColumns = cols;
         handleTable("SeasonRace", cols);
     }
     private void handleExhibitionView() {
@@ -303,13 +312,17 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("eventID");
             add("trackID");
             add("winner");}};
+        AllColumns = new ArrayList(cols);
+        selectedColumns = cols;
         handleTable("Exhibition", cols);
     }
     private void handleSponsorsTeamView() {
         ArrayList<String> cols = new ArrayList<>() {{
             add("sponsorID");
             add("teamID");
-            add("dealValue");;}};
+            add("dealValue");}};
+        AllColumns = new ArrayList(cols);
+        selectedColumns = cols;
         handleTable("SponsorsTeam", cols);
     }
     private void handleSponsorsEventView() {
@@ -317,7 +330,9 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("sponsorID");
             add("eventID");
             add("trackID");
-            add("dealValue");;}};
+            add("dealValue");}};
+        AllColumns = new ArrayList(cols);
+        selectedColumns = cols;
         handleTable("SponsorsEvent", cols);
     }
     private void handleOperateView() {
@@ -325,7 +340,9 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("carID");
             add("athleteID");
             add("eventID");
-            add("trackID");;}};
+            add("trackID");}};
+        AllColumns = new ArrayList(cols);
+        selectedColumns = cols;
         handleTable("operate", cols);
     }
     private void handleDriveInView() {
@@ -333,6 +350,56 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("athleteID");
             add("eventID");
             add("trackID");}};
+        AllColumns = new ArrayList(cols);
+        selectedColumns = cols;
         handleTable("DriveIn", cols);
+    }
+
+    private void SwitchCombo(String text) {
+        if (comboBox.getSelectedItem() == "Directors") handleDirectorView();
+        else if (comboBox.getSelectedItem() == "Athletes") handleAthleteView();
+        else if (comboBox.getSelectedItem() == "Teams") handleTeamView();
+        else if (comboBox.getSelectedItem() == "Cars") handleCarView();
+        else if (comboBox.getSelectedItem() == "Car Models") handleCarModelView();
+        else if (comboBox.getSelectedItem() == "Events") handleEventView();
+        else if (comboBox.getSelectedItem() == "Pit Crew") handlePitCrewView();
+        else if (comboBox.getSelectedItem() == "Results") handleResultsView();
+        else if (comboBox.getSelectedItem() == "Lap Times") handleLapTimeView();
+        else if (comboBox.getSelectedItem() == "Tracks") handleTrackView();
+        else if (comboBox.getSelectedItem() == "Track zip codes") handleTrackZipCodeView();
+        else if (comboBox.getSelectedItem() == "Drive In") handleDriveInView();
+        else if (comboBox.getSelectedItem() == "Results scoring") handleResultsScoringView();
+        else if (comboBox.getSelectedItem() == "Sponsors") handleSponsorView();
+        else if (comboBox.getSelectedItem() == "Sponsor sponsors Team") handleSponsorsTeamView();
+        else if (comboBox.getSelectedItem() == "Sponsor sponsors Event") handleSponsorsEventView();
+        else if (comboBox.getSelectedItem() == "Practices") handlePracticeView();
+        else if (comboBox.getSelectedItem() == "Season races") handleSeasonRaceView();
+        else if (comboBox.getSelectedItem() == "Exhibitions") handleExhibitionView();
+        else if (comboBox.getSelectedItem() == "Driver operates") handleOperateView();
+        else System.out.println(comboBox.getSelectedItem() + " not in there");
+    }
+
+    private String DetermineTable(String text) {
+        if (comboBox.getSelectedItem() == "Directors") return "DIRECTOR";
+        else if (comboBox.getSelectedItem() == "Athletes") return "ATHLETE";
+        else if (comboBox.getSelectedItem() == "Teams") return "TEAM";
+        else if (comboBox.getSelectedItem() == "Cars") return "CAR";
+        else if (comboBox.getSelectedItem() == "Car Models") return "CARMODEL";
+        else if (comboBox.getSelectedItem() == "Events") return "EVENT";
+        else if (comboBox.getSelectedItem() == "Pit Crew") return "PITCREW";
+        else if (comboBox.getSelectedItem() == "Results") return "RESULTS";
+        else if (comboBox.getSelectedItem() == "Lap Times") return "LAPTIME";
+        else if (comboBox.getSelectedItem() == "Tracks") return "TRACK";
+        else if (comboBox.getSelectedItem() == "Track zip codes") return "TRACKZIPCODE";
+        else if (comboBox.getSelectedItem() == "Drive In") return "DRIVEIN";
+        else if (comboBox.getSelectedItem() == "Results scoring") return "RESULTSSCORING";
+        else if (comboBox.getSelectedItem() == "Sponsors") return "SPONSOR";
+        else if (comboBox.getSelectedItem() == "Sponsor sponsors Team") return "SPONSORSTEAM";
+        else if (comboBox.getSelectedItem() == "Sponsor sponsors Event") return "SPONSORSEVENT";
+        else if (comboBox.getSelectedItem() == "Practices") return "PRACTICE";
+        else if (comboBox.getSelectedItem() == "Season races") return "SEASONRACE";
+        else if (comboBox.getSelectedItem() == "Exhibitions") return "EXHIBITION";
+        else if (comboBox.getSelectedItem() == "Driver operates") return "OPERATE";
+        else return comboBox.getSelectedItem() + " not in there";
     }
 }

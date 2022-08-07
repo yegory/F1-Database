@@ -54,7 +54,7 @@ public class HomeWindow {
     // Panel 2 that contains the Checkboxes to allow selection on columns
     private void setupCheckboxPanel() {
         checkboxPanel = new JPanel();
-        checkboxPanel.setBounds(0,50, frame.getWidth(),50);
+        checkboxPanel.setBounds(0,50, frame.getWidth(),40);
         checkboxPanel.setBackground(Color.lightGray);
         checkboxPanel.setLayout(new FlowLayout());
         frame.add(checkboxPanel);
@@ -64,7 +64,7 @@ public class HomeWindow {
     private void setUpTablePanel() {
         tablePanel = new JPanel();
         tablePanel.setBackground(new Color(204, 218, 255));
-        tablePanel.setBounds(0,100, frame.getWidth(),frame.getHeight() - 100);
+        tablePanel.setBounds(0,90, frame.getWidth(),frame.getHeight() - 90);
         frame.add(tablePanel);
     }
 
