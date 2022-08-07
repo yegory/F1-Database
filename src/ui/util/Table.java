@@ -5,6 +5,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Table extends DefaultTableModel {
 
@@ -26,11 +27,17 @@ public class Table extends DefaultTableModel {
         dtm.setRowCount(0);
         dtm.setColumnCount(0);
     }
-    public void addColumns(Object[][] data) {
-        for (int i=0; i<data[0].length; i++) {
-            dtm.addColumn(data[0][i].toString());
+
+    public void addColumns(ArrayList<String> data) {
+        for (int i=0; i<data.size(); i++) {
+            dtm.addColumn(data.get(i));
         }
     }
+//    public void addColumns(Object[][] data) { OLD
+//        for (int i=0; i<data[0].length; i++) {
+//            dtm.addColumn(data[0][i].toString());
+//        }
+//    }
     public void addRows(Object[][] data) {
         for (Object[] o: data) {
             dtm.addRow(o);

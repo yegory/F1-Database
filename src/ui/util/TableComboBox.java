@@ -7,36 +7,82 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class TableComboBox extends JComboBox implements ActionListener {
 
-    String[] modelClasses = {"Directors", "Athletes", "Teams",  "Cars", "Car Models", "Events", "Pit Crew", "Results",
+    private String[] modelClasses = {"Select table", "Directors", "Athletes", "Teams",  "Cars", "Car Models", "Events", "Pit Crew", "Results",
             "Lap Times", "Tracks", "Track zip codes", "Drive In", "Results scoring", "Sponsor sponsors Team", "Sponsors",
             "Sponsor sponsors Event", "Sponsor sponsors Team", "Practices", "Season races", "Exhibitions", "Driver operates"};
 
-    JComboBox comboBox;
-    Table table;
-    public TableComboBox(Table table, JPanel home) {
+    private final JComboBox comboBox;
+    private final JPanel homeTopPanel;
+    private final JPanel homeMiddlePanel;
+    private final Table table;
+    private AttributeCheckbox attributeCheckbox;
+    public TableComboBox(Table table, JPanel homeTopPanel, JPanel homeMiddlePanel) {
         this.table = table;
+        this.homeTopPanel = homeTopPanel;
+        this.homeMiddlePanel = homeMiddlePanel;
+
         comboBox = new JComboBox(modelClasses);
-        comboBox.setPreferredSize(new Dimension(200, 50));
-        comboBox.setMaximumSize(new Dimension(200, 100));
+        comboBox.setPreferredSize(new Dimension(220, 50));
+        comboBox.setMaximumSize(new Dimension(220, 100));
         comboBox.addActionListener(this);
         comboBox.setMaximumRowCount(25);
-        home.add(comboBox);
+        homeTopPanel.add(comboBox);
+
+        attributeCheckbox = new AttributeCheckbox(homeMiddlePanel);
     }
 
-    public Object getComboSelection() {
-        return comboBox.getSelectedItem();
+    public class AttributeCheckbox extends JCheckBox implements ActionListener {
+        private List<JCheckBox> checkBoxes;
+        private JPanel parentPanel;
+
+        public AttributeCheckbox(JPanel parent) {
+            parentPanel = parent;
+            checkBoxes = new ArrayList<>();
+        }
+
+        private void addCheckBox(String text) {
+            JCheckBox checkBox = new JCheckBox(text);
+            checkBox.addActionListener(this);
+            checkBox.setVisible(true);
+            parentPanel.add(checkBox);
+            checkBoxes.add(checkBox);
+        }
+        public void addCheckBoxes(ArrayList<String> cols) {
+            for (String attributeName: cols) {
+                addCheckBox(attributeName);
+            }
+
+
+        }
+
+        public void removeAllCheckBoxes() {
+            for (int i=0; i< checkBoxes.size(); i++) {
+                System.out.println(checkBoxes.get(i).getText());
+                homeMiddlePanel.remove(checkBoxes.get(i));
+            }
+            checkBoxes = new ArrayList<>();
+            homeMiddlePanel.repaint();
+            homeMiddlePanel.revalidate();
+        }
+
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+        }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource()==comboBox) {
-            if (comboBox.getSelectedItem() == "Select table")
+            if (modelClasses[0] == "Select table") {
+                modelClasses = Arrays.copyOfRange(modelClasses, 1, modelClasses.length);
                 comboBox.removeItem("Select table");
-
-            else if (comboBox.getSelectedItem() == "Directors")
+            }
+            if (comboBox.getSelectedItem() == "Directors")
                 handleDirectorView();
             else if (comboBox.getSelectedItem() == "Athletes")
                 handleAthleteView();
@@ -93,29 +139,32 @@ public class TableComboBox extends JComboBox implements ActionListener {
         }
     }
 
-    private void print2DArray(Object[][] outputData) {
-        for (int i = 0; i < outputData.length; i++) {
-            for (int j = 0; j < outputData[0].length; j++) {
-                System.out.print(outputData[i][j].toString() + " ");
-            }
-            System.out.println("");
-        }
-    }
+//    private void print2DArray(Object[][] outputData) {
+//        for (int i = 0; i < outputData.length; i++) {
+//            for (int j = 0; j < outputData[0].length; j++) {
+//                System.out.print(outputData[i][j].toString() + " ");
+//            }
+//            System.out.println("");
+//        }
+//    }
     private void handleTable(String table_name, ArrayList<String> columns) {
         Object[][] result = DatabaseConnectionHandler.getHandler().project(table_name, columns);
-        print2DArray(result);
+        //print2DArray(result);
         int numberOfElementsInArray = result.length; // number of rows in result
-        Object[][] columnData = Arrays.copyOfRange(result, 0, 1);
+        //Object[][] columnData = Arrays.copyOfRange(result, 0, 1);
         Object[][] rowData = Arrays.copyOfRange(result, 1, numberOfElementsInArray);
 
 
         table.clearTable();
-        table.addColumns(columnData);
+        table.addColumns(columns);
         table.addRows(rowData);
+        attributeCheckbox.removeAllCheckBoxes();
+        attributeCheckbox.addCheckBoxes(columns);
     }
 
 
     private void handleDirectorView() {
+
         ArrayList<String> cols = new ArrayList<>() {{
             add("directorID");
             add("firstName");
