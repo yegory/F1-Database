@@ -74,7 +74,6 @@ public class TableComboBox extends JComboBox implements ActionListener {
 
         public void removeAllCheckBoxes() {
             for (int i=0; i< checkBoxes.size(); i++) {
-                //System.out.println(checkBoxes.get(i).getText());
                 homeMiddlePanel.remove(checkBoxes.get(i));
             }
             checkBoxes = new ArrayList<>();
@@ -106,42 +105,21 @@ public class TableComboBox extends JComboBox implements ActionListener {
         }
         return -1;
     }
-//    private void print2DArray(Object[][] outputData) {
-//        for (int i = 0; i < outputData.length; i++) {
-//            for (int j = 0; j < outputData[0].length; j++) {
-//                System.out.print(outputData[i][j].toString() + " ");
-//            }
-//            System.out.println("");
-//        }
-//    }
-    private void handleTable(String table_name, ArrayList<String> columns) {
-        if (columns.size() == 0) {
-            System.out.println("ERROR");
-        }
-        Object[][] result = DatabaseConnectionHandler.getHandler().project(table_name, columns);
-        //print2DArray(result);
-        int numberOfElementsInArray = result.length; // number of rows in result
-        //Object[][] columnData = Arrays.copyOfRange(result, 0, 1);
-        Object[][] rowData = Arrays.copyOfRange(result, 1, numberOfElementsInArray);
 
+    private void handleTable(String table_name, ArrayList<String> columns) {
+        if (columns.size() == 0) System.out.println("ERROR");
+
+        Object[][] result = DatabaseConnectionHandler.getHandler().project(table_name, columns);
+        int numberOfElementsInArray = result.length; // number of rows in result
+        Object[][] rowData = Arrays.copyOfRange(result, 1, numberOfElementsInArray);
 
         table.clearTable();
         table.addColumns(columns);
         table.addRows(rowData);
 
-        System.out.println("\n" + selectedColumns.size() + " selected columns");
-        for (String s: selectedColumns)
-            System.out.println(s);
-
-        System.out.println("\n " + AllColumns.size()+  " all");
-
-        for (String s: AllColumns)
-            System.out.println(s);
-        System.out.println("\ndone");
         attributeCheckbox.removeAllCheckBoxes();
         attributeCheckbox.addCheckBoxes(AllColumns);
     }
-
 
     private void handleDirectorView() {
         ArrayList<String> cols = new ArrayList<>() {{
