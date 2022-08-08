@@ -15,12 +15,12 @@ public class TableComboBox extends JComboBox implements ActionListener {
             "Lap Times", "Tracks", "Track zip codes", "Drive In", "Results scoring", "Sponsor sponsors Team", "Sponsors",
             "Sponsor sponsors Event", "Sponsor sponsors Team", "Practices", "Season races", "Exhibitions", "Driver operates"};
 
-    private final JComboBox comboBox;
+    public final JComboBox comboBox;
     private final JPanel homeTopPanel;
     private final JPanel homeMiddlePanel;
     private final Table table;
     private AttributeCheckbox attributeCheckbox;
-    private ArrayList<String> selectedColumns;
+    public ArrayList<String> selectedColumns;
     private ArrayList<String> AllColumns; //all checkbox columns even if user checked off
     public TableComboBox(Table table, JPanel homeTopPanel, JPanel homeMiddlePanel) {
         this.table = table;
@@ -49,8 +49,6 @@ public class TableComboBox extends JComboBox implements ActionListener {
             SwitchCombo(comboBox.getSelectedItem().toString());
         }
     }
-
-
 
     public class AttributeCheckbox extends JCheckBox implements ActionListener {
         private List<JCheckBox> checkBoxes;
@@ -92,7 +90,7 @@ public class TableComboBox extends JComboBox implements ActionListener {
                 selectedColumns.remove(index);
             }
 
-            handleTable(DetermineTable(comboBox.getSelectedItem().toString()), selectedColumns);
+            handleTable(DetermineTable(comboBox.getSelectedItem().toString()), selectedColumns, "");
         }
     }
 
@@ -106,10 +104,10 @@ public class TableComboBox extends JComboBox implements ActionListener {
         return -1;
     }
 
-    private void handleTable(String table_name, ArrayList<String> columns) {
+    public void handleTable(String table_name, ArrayList<String> columns, String criteria) {
         if (columns.size() == 0) System.out.println("ERROR");
 
-        Object[][] result = DatabaseConnectionHandler.getHandler().project(table_name, columns);
+        Object[][] result = DatabaseConnectionHandler.getHandler().select(table_name, columns, criteria);
         int numberOfElementsInArray = result.length; // number of rows in result
         Object[][] rowData = Arrays.copyOfRange(result, 1, numberOfElementsInArray);
 
@@ -128,7 +126,7 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("lastName");}};
         AllColumns = new ArrayList(cols);
         selectedColumns = cols;
-        handleTable("Director", cols);
+        handleTable("Director", cols, "");
     }
     private void handleAthleteView() {
         ArrayList<String> cols = new ArrayList<>() {{
@@ -142,7 +140,7 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("endDate");}};
         AllColumns = new ArrayList(cols);
         selectedColumns = cols;
-        handleTable("Athlete", cols);
+        handleTable("Athlete", cols, "");
     }
 
     private void handleCarView() {
@@ -153,7 +151,7 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("teamID");}};
         AllColumns = new ArrayList(cols);
         selectedColumns = cols;
-        handleTable("Car", cols);
+        handleTable("Car", cols, "");
     }
 
     private void handleCarModelView() {
@@ -164,7 +162,7 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("horsepower");}};
         AllColumns = new ArrayList(cols);
         selectedColumns = cols;
-        handleTable("carModel", cols);
+        handleTable("carModel", cols, "");
     }
 
     private void handleEventView() {
@@ -176,7 +174,7 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("laps");}};
         AllColumns = new ArrayList(cols);
         selectedColumns = cols;
-        handleTable("Event", cols);
+        handleTable("Event", cols, "");
     }
 
     private void handleTrackView() {
@@ -189,7 +187,7 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("zipCode");}};
         AllColumns = new ArrayList(cols);
         selectedColumns = cols;
-        handleTable("Track", cols);
+        handleTable("Track", cols, "");
     }
 
     private void handlePitCrewView() {
@@ -203,7 +201,7 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("endDate");}};
         AllColumns = new ArrayList(cols);
         selectedColumns = cols;
-        handleTable("PitCrew", cols);
+        handleTable("PitCrew", cols, "");
     }
 
     private void handleTeamView() {
@@ -215,7 +213,7 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("endDate");}};
         AllColumns = new ArrayList(cols);
         selectedColumns = cols;
-        handleTable("Team", cols);
+        handleTable("Team", cols, "");
     }
     private void handleResultsView() {
         ArrayList<String> cols = new ArrayList<>() {{
@@ -228,7 +226,7 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("bestLap");}};
         AllColumns = new ArrayList(cols);
         selectedColumns = cols;
-        handleTable("Results", cols);
+        handleTable("Results", cols, "");
     }
 
     private void handleLapTimeView() {
@@ -238,7 +236,7 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("time");}};
         AllColumns = new ArrayList(cols);
         selectedColumns = cols;
-        handleTable("LapTime", cols);
+        handleTable("LapTime", cols, "");
     }
     private void handleResultsScoringView() {
         ArrayList<String> cols = new ArrayList<>() {{
@@ -246,7 +244,7 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("points");}};
         AllColumns = new ArrayList(cols);
         selectedColumns = cols;
-        handleTable("ResultsScoring", cols);
+        handleTable("ResultsScoring", cols, "");
     }
     private void handleTrackZipCodeView() {
         ArrayList<String> cols = new ArrayList<>() {{
@@ -256,7 +254,7 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("province");}};
         AllColumns = new ArrayList(cols);
         selectedColumns = cols;
-        handleTable("TrackZipCode", cols);
+        handleTable("TrackZipCode", cols, "");
     }
     private void handleSponsorView() {
         ArrayList<String> cols = new ArrayList<>() {{
@@ -264,7 +262,7 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("name");}};
         AllColumns = new ArrayList(cols);
         selectedColumns = cols;
-        handleTable("Sponsor", cols);
+        handleTable("Sponsor", cols, "");
     }
     private void handlePracticeView() {
         ArrayList<String> cols = new ArrayList<>() {{
@@ -273,7 +271,7 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("bestLap");}};
         AllColumns = new ArrayList(cols);
         selectedColumns = cols;
-        handleTable("Practice", cols);
+        handleTable("Practice", cols, "");
     }
     private void handleSeasonRaceView() {
         ArrayList<String> cols = new ArrayList<>() {{
@@ -283,7 +281,7 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("winner");}};
         AllColumns = new ArrayList(cols);
         selectedColumns = cols;
-        handleTable("SeasonRace", cols);
+        handleTable("SeasonRace", cols, "");
     }
     private void handleExhibitionView() {
         ArrayList<String> cols = new ArrayList<>() {{
@@ -292,7 +290,7 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("winner");}};
         AllColumns = new ArrayList(cols);
         selectedColumns = cols;
-        handleTable("Exhibition", cols);
+        handleTable("Exhibition", cols, "");
     }
     private void handleSponsorsTeamView() {
         ArrayList<String> cols = new ArrayList<>() {{
@@ -301,7 +299,7 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("dealValue");}};
         AllColumns = new ArrayList(cols);
         selectedColumns = cols;
-        handleTable("SponsorsTeam", cols);
+        handleTable("SponsorsTeam", cols, "");
     }
     private void handleSponsorsEventView() {
         ArrayList<String> cols = new ArrayList<>() {{
@@ -311,7 +309,7 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("dealValue");}};
         AllColumns = new ArrayList(cols);
         selectedColumns = cols;
-        handleTable("SponsorsEvent", cols);
+        handleTable("SponsorsEvent", cols, "");
     }
     private void handleOperateView() {
         ArrayList<String> cols = new ArrayList<>() {{
@@ -321,7 +319,7 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("trackID");}};
         AllColumns = new ArrayList(cols);
         selectedColumns = cols;
-        handleTable("operate", cols);
+        handleTable("operate", cols, "");
     }
     private void handleDriveInView() {
         ArrayList<String> cols = new ArrayList<>() {{
@@ -330,7 +328,7 @@ public class TableComboBox extends JComboBox implements ActionListener {
             add("trackID");}};
         AllColumns = new ArrayList(cols);
         selectedColumns = cols;
-        handleTable("DriveIn", cols);
+        handleTable("DriveIn", cols, "");
     }
 
     private void SwitchCombo(String text) {
@@ -357,7 +355,7 @@ public class TableComboBox extends JComboBox implements ActionListener {
         else System.out.println(comboBox.getSelectedItem() + " not in there");
     }
 
-    private String DetermineTable(String text) {
+    public String DetermineTable(String text) {
         if (comboBox.getSelectedItem() == "Directors") return "DIRECTOR";
         else if (comboBox.getSelectedItem() == "Athletes") return "ATHLETE";
         else if (comboBox.getSelectedItem() == "Teams") return "TEAM";
