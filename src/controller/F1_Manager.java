@@ -4,15 +4,19 @@ import database.DatabaseConnectionHandler;
 import database.DirectorHandler;
 import delegates.LoginWindowDelegate;
 import model.Director;
+import ui.DeleteFrame;
+import ui.InsertFrame;
 import ui.LoginWindow;
+import ui.UpdateFrame;
 
-import java.sql.Array;
 import java.util.ArrayList;
 
 public class F1_Manager implements LoginWindowDelegate {
     private DatabaseConnectionHandler dbHandler = null;
-    // private DirectorHandler directorHandler = null;
     private LoginWindow loginWindow = null;
+    private InsertFrame insertFrame;
+    private DeleteFrame deleteFrame;
+    private UpdateFrame updateFrame;
 
     public F1_Manager() {
         dbHandler = DatabaseConnectionHandler.getHandler();
@@ -30,6 +34,9 @@ public class F1_Manager implements LoginWindowDelegate {
         if (didConnect) {
             // Once connected, remove login window and start text transaction flow
             loginWindow.dispose();
+            insertFrame = new InsertFrame();
+            deleteFrame = new DeleteFrame();
+            updateFrame = new UpdateFrame();
             DirectorHandler dh = dbHandler.getDirectorHandler();
 
             Director testDir = new Director(50, "testFname", "testLname");
@@ -48,8 +55,6 @@ public class F1_Manager implements LoginWindowDelegate {
             attributes.add("NRACES");
             attributes.add("STARTDATE");
             Object[][] array = dbHandler.project("ATHLETE", attributes);
-            // System.out.println(array);
-
         } else {
             loginWindow.handleLoginFailed();
         }

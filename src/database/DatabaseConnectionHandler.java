@@ -106,19 +106,9 @@ public class DatabaseConnectionHandler {
         return results;
     }
 
-    private void print2DArray(Object[][] outputData) {
-        for (int i = 0; i < outputData.length; i++) {
-            for (int j = 0; j < outputData[0].length; j++) {
-                System.out.print(outputData[i][j].toString() + " ");
-            }
-            System.out.println("");
-        }
-    }
-
     public Object[][] project(String tableName, ArrayList<String> attributes) {
         return select(tableName, attributes, "");
     }
-
 
     public Object[][] join(String tableNameA, String tableNameB, String criteria) {
         Object[][] results = null;
@@ -128,8 +118,6 @@ public class DatabaseConnectionHandler {
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ResultSet rs = ps.executeQuery();
             results = generateArrayFromSet(rs);
-            // do something with result set
-            // call to Matts function to parse resultset
 
             rs.close();
             ps.close();
@@ -179,6 +167,15 @@ public class DatabaseConnectionHandler {
         }
 
         return outputData;
+    }
+
+    public void print2DArray(Object[][] outputData) {
+        for (int i = 0; i < outputData.length; i++) {
+            for (int j = 0; j < outputData[0].length; j++) {
+                System.out.print(outputData[i][j].toString() + " ");
+            }
+            System.out.println("");
+        }
     }
 
     public Connection getConnection() {
