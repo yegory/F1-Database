@@ -1,13 +1,9 @@
 package ui;
 
 import database.DatabaseConnectionHandler;
-import database.DirectorHandler;
-import model.Director;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -91,6 +87,7 @@ public class FunctionsFrame extends JFrame implements ActionListener {
         processTable(data);
     }
 
+    // take the queried data and load it into the table
     private void processTable(Object[][] data) {
         Object[][] newData = processArrayForData(data);
         String[] columnNames = processArrayForNames(data);
@@ -100,6 +97,7 @@ public class FunctionsFrame extends JFrame implements ActionListener {
         table.repaint();
     }
 
+    // get first row of array for column names
     private String[] processArrayForNames(Object[][] data) {
         int dataWidth = data[0].length;
 
@@ -112,6 +110,7 @@ public class FunctionsFrame extends JFrame implements ActionListener {
         return columnNames;
     }
 
+    // load everything except the first row into an object array
     private Object[][] processArrayForData(Object[][] data) {
         int dataWidth = data[0].length;
         int dataHeight = data.length;
