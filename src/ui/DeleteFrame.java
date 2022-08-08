@@ -2,7 +2,9 @@ package ui;
 
 import database.DatabaseConnectionHandler;
 import database.DirectorHandler;
+import database.ResultsHandler;
 import model.Director;
+import model.Results;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,9 +51,9 @@ public class DeleteFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         DatabaseConnectionHandler dbh = DatabaseConnectionHandler.getHandler();
-        // ResultsHandler rh = dbh.getResultsHandler();
+        ResultsHandler rh = dbh.getResultsHandler();
         int resultsID = Integer.parseInt(resultsIDField.getText());
-        // rh.deleteResults(new Result(resultsID, firstName, lastName));
+        rh.deleteResults(new Results(resultsID, 0, 0,0,0,0,0));
         this.dispose();
     }
 }

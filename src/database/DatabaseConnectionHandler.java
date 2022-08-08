@@ -3,6 +3,7 @@ package database;
 import util.PrintablePreparedStatement;
 
 import javax.print.attribute.standard.ReferenceUriSchemesSupported;
+import javax.xml.transform.Result;
 import java.lang.reflect.Array;
 import java.sql.*;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class DatabaseConnectionHandler {
     public static final String WARNING_TAG = "[WARNING]";
 
     private DirectorHandler directorHandler;
+    private ResultsHandler resultsHandler;
     private QueryBuilder qb;
 
     private Connection connection = null;
@@ -42,6 +44,7 @@ public class DatabaseConnectionHandler {
 
     private void initiateTableHandlers() {
         directorHandler = new DirectorHandler();
+        resultsHandler = new ResultsHandler();
         // TODO: make the rest of the table handler classes
     }
 
@@ -184,5 +187,9 @@ public class DatabaseConnectionHandler {
 
     public DirectorHandler getDirectorHandler() {
         return directorHandler;
+    }
+
+    public ResultsHandler getResultsHandler() {
+        return resultsHandler;
     }
 }
