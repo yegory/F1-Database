@@ -4,10 +4,7 @@ import database.DatabaseConnectionHandler;
 import database.DirectorHandler;
 import delegates.LoginWindowDelegate;
 import model.Director;
-import ui.DeleteFrame;
-import ui.InsertFrame;
-import ui.LoginWindow;
-import ui.UpdateFrame;
+import ui.*;
 
 import java.util.ArrayList;
 
@@ -17,6 +14,7 @@ public class F1_Manager implements LoginWindowDelegate {
     private InsertFrame insertFrame;
     private DeleteFrame deleteFrame;
     private UpdateFrame updateFrame;
+    private FunctionsFrame functionsFrame;
 
     public F1_Manager() {
         dbHandler = DatabaseConnectionHandler.getHandler();
@@ -37,6 +35,7 @@ public class F1_Manager implements LoginWindowDelegate {
             insertFrame = new InsertFrame();
             deleteFrame = new DeleteFrame();
             updateFrame = new UpdateFrame();
+            functionsFrame = new FunctionsFrame();
             DirectorHandler dh = dbHandler.getDirectorHandler();
 
             Director testDir = new Director(50, "testFname", "testLname");
