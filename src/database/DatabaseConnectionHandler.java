@@ -3,6 +3,7 @@ package database;
 import util.PrintablePreparedStatement;
 
 import javax.print.attribute.standard.ReferenceUriSchemesSupported;
+import javax.xml.transform.Result;
 import java.lang.reflect.Array;
 import java.sql.*;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class DatabaseConnectionHandler {
     public static final String WARNING_TAG = "[WARNING]";
 
     private DirectorHandler directorHandler;
+    private ResultsHandler resultsHandler;
     private QueryBuilder qb;
 
     private Connection connection = null;
@@ -42,6 +44,7 @@ public class DatabaseConnectionHandler {
 
     private void initiateTableHandlers() {
         directorHandler = new DirectorHandler();
+        resultsHandler = new ResultsHandler();
         // TODO: make the rest of the table handler classes
     }
 
@@ -106,19 +109,9 @@ public class DatabaseConnectionHandler {
         return results;
     }
 
-    private void print2DArray(Object[][] outputData) {
-        for (int i = 0; i < outputData.length; i++) {
-            for (int j = 0; j < outputData[0].length; j++) {
-                System.out.print(outputData[i][j].toString() + " ");
-            }
-            System.out.println("");
-        }
-    }
-
     public Object[][] project(String tableName, ArrayList<String> attributes) {
         return select(tableName, attributes, "");
     }
-
 
     public Object[][] join(String tableNameA, String tableNameB, String criteria) {
         Object[][] results = null;
@@ -128,8 +121,6 @@ public class DatabaseConnectionHandler {
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ResultSet rs = ps.executeQuery();
             results = generateArrayFromSet(rs);
-            // do something with result set
-            // call to Matts function to parse resultset
 
             rs.close();
             ps.close();
@@ -181,11 +172,96 @@ public class DatabaseConnectionHandler {
         return outputData;
     }
 
+    public Object[][] aggByGroup() {
+        Object[][] results = null;
+        try {
+            String query = qb.buildAggByGroup();
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+            results = generateArrayFromSet(rs);
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+        print2DArray(results);
+        return results;
+    }
+
+    public Object[][] aggWithHaving() {
+        Object[][] results = null;
+        try {
+            String query = qb.buildAggWithHaving();
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+            results = generateArrayFromSet(rs);
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+        print2DArray(results);
+        return results;
+    }
+
+    public Object[][] nestedAgg() {
+        Object[][] results = null;
+        try {
+            String query = qb.buildNestedAgg();
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+            results = generateArrayFromSet(rs);
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+        print2DArray(results);
+        return results;
+    }
+
+    public Object[][] division() {
+        Object[][] results = null;
+        try {
+            String query = qb.buildDivision();
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+            results = generateArrayFromSet(rs);
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+        print2DArray(results);
+        return results;
+    }
+
+    public void print2DArray(Object[][] outputData) {
+        for (int i = 0; i < outputData.length; i++) {
+            for (int j = 0; j < outputData[0].length; j++) {
+                System.out.print(outputData[i][j].toString() + " ");
+            }
+            System.out.println("");
+        }
+    }
+
     public Connection getConnection() {
         return connection;
     }
 
     public DirectorHandler getDirectorHandler() {
         return directorHandler;
+    }
+
+    public ResultsHandler getResultsHandler() {
+        return resultsHandler;
     }
 }

@@ -41,4 +41,20 @@ public class QueryBuilder {
 
         return query;
     }
+
+    public String buildAggByGroup() {
+        return "SELECT * FROM director";
+    }
+
+    public String buildDivision() {
+        return "SELECT * FROM car";
+    }
+
+    public String buildAggWithHaving() {
+        return "SELECT * FROM track";
+    }
+
+    public String buildNestedAgg() {
+        return "SELECT * FROM team";
+    }
 }
