@@ -124,12 +124,22 @@ public class HomeWindow {
                 JTextField input = new JTextField(20);
                 JButton button = new JButton("Enter");
                 inputpanel.add(input);
+                inputpanel.add(button);
+                panel.add(inputpanel);
+
                 JComboBox comboBox = new JComboBox(modelClasses);
                 JComboBox comboBox2 = new JComboBox(modelClasses);
                 panel.add(comboBox);
                 panel.add(comboBox2);
-                inputpanel.add(button);
-                panel.add(inputpanel);
+
+                button.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        System.out.println("Clicked button");
+                    }
+                });
+
+
                 frame.getContentPane().add(BorderLayout.CENTER, panel);
                 frame.pack();
                 frame.setBounds(600, 600, 1200, 600);
@@ -143,9 +153,9 @@ public class HomeWindow {
                 panel.add(tablePanel);
                 String[] columnNames = {}; Object[][] data = {};
                 Table table = new Table(tablePanel, columnNames, data, frame.getWidth()-10, tablePanel.getHeight() - 40);
-                TableBox tableBox = new TableBox(table);
-                tableBox.displayView("Director", "PitCrew");
-                panel.add(tableBox);
+//                TableBox tableBox = new TableBox(table);
+//                tableBox.displayView("Director", "PitCrew");
+//                panel.add(tableBox);
                 input.requestFocus();
 
             }
