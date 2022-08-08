@@ -24,6 +24,7 @@ public class HomeWindow implements ActionListener {
     private JButton updateButton;
     private JButton applyButton;
     private JButton otherFunctionsButton;
+    private JButton joinButton;
     private JTextField criteriaField;
 
     F1_Manager f1_manager = null;
@@ -32,7 +33,7 @@ public class HomeWindow implements ActionListener {
         this.f1_manager = f1_manager;
 
         HomeFrame = new JFrame("Main Frame");
-        HomeFrame.setSize(1000,750);
+        HomeFrame.setSize(1200,750);
         HomeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         HomeFrame.getContentPane().setBackground(new Color(175, 175, 175));
         HomeFrame.setLocationRelativeTo(null);
@@ -114,9 +115,13 @@ public class HomeWindow implements ActionListener {
         updateButton = new JButton("Update operation");
         updateButton.addActionListener(this);
 
+        joinButton = new JButton(("Join operation"));
+        joinButton.addActionListener(this);
+
         buttonPanel.add(insertButton);
         buttonPanel.add(updateButton);
         buttonPanel.add(deleteButton);
+        buttonPanel.add(joinButton);
         buttonPanel.add(otherFunctionsButton);
         criteriaPanel.add(criteriaField);
         criteriaPanel.add(applyButton);
@@ -135,6 +140,8 @@ public class HomeWindow implements ActionListener {
             new UpdateFrame();
         } else if (e.getActionCommand() == "Other functions") {
             new FunctionsFrame();
+        } else if (e.getActionCommand() == "Join operation") {
+            // join operation frame creation here
         }
         else if (e.getActionCommand() == "Apply selection criteria") {
             tableComboBox.handleTable(
