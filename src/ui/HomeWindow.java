@@ -95,6 +95,9 @@ public class HomeWindow implements ActionListener {
         // Add Combo Buttons and buttons to Panel 1
         JLabel label = new JLabel("Selected table:");
         buttonPanel.add(label);
+        JLabel columnLabel = new JLabel("Selected columns:");
+        checkboxPanel.add(columnLabel);
+
         tableComboBox = new TableComboBox(table, buttonPanel, checkboxPanel);
         insertButton = new JButton("Insert operation");
         insertButton.addActionListener(this);

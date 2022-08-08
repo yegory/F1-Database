@@ -554,18 +554,18 @@ INSERT INTO SponsorsTeam VALUES
 INSERT INTO SponsorsTeam VALUES
     (5, 5, 30000);
 INSERT INTO SponsorsTeam VALUES
-    (1, 2, 30000);
+    (1, 2, 38000);
 INSERT INTO SponsorsTeam VALUES
-    (1, 3, 30000);
+    (1, 3, 15000);
 INSERT INTO SponsorsTeam VALUES
-    (1, 4, 30000);
+    (1, 4, 18000);
 INSERT INTO SponsorsTeam VALUES
-    (1, 5, 30000);
+    (1, 5, 90000);
 INSERT INTO SponsorsTeam VALUES
-    (5, 1, 30000);
+    (5, 1, 87000);
 INSERT INTO SponsorsTeam VALUES
-    (5, 2, 30000);
+    (5, 2, 10000);
 INSERT INTO SponsorsTeam VALUES
-    (5, 3, 30000);
+    (5, 3, 45000);
 INSERT INTO SponsorsTeam VALUES
-    (5, 4, 30000);
+    (5, 4, 25000);

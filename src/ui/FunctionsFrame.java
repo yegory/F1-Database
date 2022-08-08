@@ -49,7 +49,7 @@ public class FunctionsFrame extends JFrame implements ActionListener {
 
         aggWithGroupByButton.setToolTipText("<html>" + AGG_BY_GROUP_QUERY + "<br>" + "Find each athlete's best lap time.</html>");
         aggWithGroupByButton.addActionListener(this);
-        aggWithHavingButton.setToolTipText(AGG_WITH_HAVING_QUERY);
+        aggWithHavingButton.setToolTipText("<html>" + AGG_WITH_HAVING_QUERY + "<br>" + "Find the max team sponsorship value for each sponsorID where the sponsorID is greater than or equal to 3.</html>");
         aggWithHavingButton.addActionListener(this);
         nestedAggButton.setToolTipText("<html>" + NESTED_AGG_QUERY+ "<br>" + "Find the best laps that are faster than the average best lap time.</html>");
         nestedAggButton.addActionListener(this);
