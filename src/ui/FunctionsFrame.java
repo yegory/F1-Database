@@ -8,6 +8,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static database.QueryBuilder.*;
+
 public class FunctionsFrame extends JFrame implements ActionListener {
     private JButton aggWithGroupByButton;
     private JButton aggWithHavingButton;
@@ -22,6 +24,7 @@ public class FunctionsFrame extends JFrame implements ActionListener {
         setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(true);
+        setLocationRelativeTo(null);
         initializePanel();
         setVisible(true);
     }
@@ -44,9 +47,13 @@ public class FunctionsFrame extends JFrame implements ActionListener {
         this.add(buttonPanel, BorderLayout.PAGE_START);
         this.add(scrollPane, BorderLayout.CENTER);
 
+        aggWithGroupByButton.setToolTipText(AGG_BY_GROUP_QUERY);
         aggWithGroupByButton.addActionListener(this);
+        aggWithHavingButton.setToolTipText(AGG_WITH_HAVING_QUERY);
         aggWithHavingButton.addActionListener(this);
+        nestedAggButton.setToolTipText(NESTED_AGG_QUERY);
         nestedAggButton.addActionListener(this);
+        divisionButton.setToolTipText(DIVISION_QUERY);
         divisionButton.addActionListener(this);
     }
 

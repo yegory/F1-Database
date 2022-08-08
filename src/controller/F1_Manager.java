@@ -39,6 +39,7 @@ public class F1_Manager implements LoginWindowDelegate {
         if (didConnect) {
             // Once connected, remove login window and start text transaction flow
             loginWindow.dispose();
+            /*
             insertFrame = new InsertFrame();
             deleteFrame = new DeleteFrame();
             updateFrame = new UpdateFrame();
@@ -61,6 +62,8 @@ public class F1_Manager implements LoginWindowDelegate {
             attributes.add("NRACES");
             attributes.add("STARTDATE");
             Object[][] array = dbHandler.project("ATHLETE", attributes);
+
+             */
 
             // System.out.println(array);
             HomeWindow hw = new HomeWindow(this);

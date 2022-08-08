@@ -23,6 +23,7 @@ public class UpdateFrame extends JFrame implements ActionListener {
         setSize(INSERT_DIRECTOR_WIDTH, INSERT_DIRECTOR_HEIGHT);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
+        setLocationRelativeTo(null);
         initializePanel();
         setVisible(true);
     }

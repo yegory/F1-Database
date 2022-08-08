@@ -24,6 +24,7 @@ public class DeleteFrame extends JFrame implements ActionListener {
         setSize(DELETE_RESULTS_WIDTH, DELETE_RESULTS_HEIGHT);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
+        setLocationRelativeTo(null);
         initializePanel();
         setVisible(true);
     }

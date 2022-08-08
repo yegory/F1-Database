@@ -21,7 +21,9 @@ public class HomeWindow implements ActionListener {
     private TableComboBox tableComboBox;
     private JButton insertButton;
     private JButton deleteButton;
+    private JButton updateButton;
     private JButton applyButton;
+    private JButton otherFunctionsButton;
     private JTextField criteriaField;
 
     F1_Manager f1_manager = null;
@@ -97,34 +99,42 @@ public class HomeWindow implements ActionListener {
         insertButton = new JButton("Insert operation");
         insertButton.addActionListener(this);
 
-        criteriaField = new JTextField("Enter selection criteria");
+        criteriaField = new JTextField("");
         criteriaField.setPreferredSize(new Dimension(250, 30));
 
         deleteButton = new JButton("Remove operation");
         deleteButton.addActionListener(this);
 
+        otherFunctionsButton = new JButton(("Other functions"));
+        otherFunctionsButton.addActionListener(this);
 
         applyButton = new JButton("Apply selection criteria");
         applyButton.addActionListener(this);
 
+        updateButton = new JButton("Update operation");
+        updateButton.addActionListener(this);
+
         buttonPanel.add(insertButton);
+        buttonPanel.add(updateButton);
         buttonPanel.add(deleteButton);
+        buttonPanel.add(otherFunctionsButton);
         criteriaPanel.add(criteriaField);
         criteriaPanel.add(applyButton);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand() =="Insert operation") {
-            DirectorInsertion = new JFrame("Inserting director");
-            DirectorInsertion.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            DirectorInsertion.getContentPane().setBackground(new Color(175, 175, 175));
-            DirectorInsertion.setLocationRelativeTo(HomeFrame);
-            DirectorInsertion.setLocation(350,400);
-            DirectorInsertion.setLayout(null);
-            DirectorInsertion.setSize(new Dimension(800, 500));
-            DirectorInsertion.setResizable(false);
-            DirectorInsertion.setVisible(true);
+        if ((e.getActionCommand() =="Insert operation") &&
+                (tableComboBox.comboBox.getSelectedItem().toString() == "Directors")) {
+            new InsertFrame();
+        } else if ((e.getActionCommand() == "Remove operation") &&
+                (tableComboBox.comboBox.getSelectedItem().toString() == "Results")){
+            new DeleteFrame();
+        } else if ((e.getActionCommand() == "Update operation") &&
+                (tableComboBox.comboBox.getSelectedItem().toString() == "Directors")){
+            new UpdateFrame();
+        } else if (e.getActionCommand() == "Other functions") {
+            new FunctionsFrame();
         }
         else if (e.getActionCommand() == "Apply selection criteria") {
             tableComboBox.handleTable(

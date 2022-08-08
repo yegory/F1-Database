@@ -3,6 +3,10 @@ package database;
 import java.util.ArrayList;
 
 public class QueryBuilder {
+    public static final String AGG_BY_GROUP_QUERY = "SELECT * FROM director";
+    public static final String AGG_WITH_HAVING_QUERY = "SELECT * FROM track";
+    public static final String NESTED_AGG_QUERY = "SELECT * FROM team";
+    public static final String DIVISION_QUERY = "SELECT * FROM car";
     public QueryBuilder() {
     }
 
@@ -43,18 +47,18 @@ public class QueryBuilder {
     }
 
     public String buildAggByGroup() {
-        return "SELECT * FROM director";
+        return AGG_BY_GROUP_QUERY;
     }
 
     public String buildDivision() {
-        return "SELECT * FROM car";
+        return DIVISION_QUERY;
     }
 
     public String buildAggWithHaving() {
-        return "SELECT * FROM track";
+        return AGG_WITH_HAVING_QUERY;
     }
 
     public String buildNestedAgg() {
-        return "SELECT * FROM team";
+        return NESTED_AGG_QUERY;
     }
 }
