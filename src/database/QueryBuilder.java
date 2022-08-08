@@ -3,10 +3,11 @@ package database;
 import java.util.ArrayList;
 
 public class QueryBuilder {
-    public static final String AGG_BY_GROUP_QUERY = "SELECT * FROM director";
-    public static final String AGG_WITH_HAVING_QUERY = "SELECT * FROM track";
-    public static final String NESTED_AGG_QUERY = "SELECT * FROM team";
-    public static final String DIVISION_QUERY = "SELECT * FROM car";
+    public static final String AGG_BY_GROUP_QUERY = "SELECT athleteID, MIN(bestLap) FROM results GROUP BY athleteID";
+    public static final String AGG_WITH_HAVING_QUERY = "SELECT * FROM results"; // TODO
+    public static final String NESTED_AGG_QUERY = "SELECT r1.athleteID, r1.bestLap FROM results r1 WHERE r1.bestLap < (SELECT AVG(r2.bestLap) FROM results r2)";
+    public static final String DIVISION_QUERY = "SELECT * FROM sponsor s WHERE NOT EXISTS ((SELECT t.teamID FROM team t) MINUS (SELECT st.teamID FROM sponsorsteam st WHERE st.sponsorID = s.sponsorID))";
+    // public static final String DIVISION_QUERY = "SELECT * FROM sponsors s WHERE NOT EXISTS (SELECT s3.teamID FROM sponsorsTeam s3 WHERE s3.sponsorID=s.sponsorID)";
     public QueryBuilder() {
     }
 
@@ -37,11 +38,13 @@ public class QueryBuilder {
         query += "SELECT *  ";
 
         query += "FROM " + tableNameA;
-        query += " INNER JOIN " + tableNameB;
+        query += " NATURAL JOIN " + tableNameB;
 
-        if (!criteria.isEmpty()) {
-            query += " ON " + criteria;
+        if (!(criteria.isEmpty())) {
+            query += " WHERE " + criteria;
         }
+
+
 
         return query;
     }

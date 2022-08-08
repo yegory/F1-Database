@@ -8,18 +8,24 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static database.QueryBuilder.*;
-
-public class FunctionsFrame extends JFrame implements ActionListener {
+public class JoinFrame extends JFrame implements ActionListener {
     private JButton aggWithGroupByButton;
     private JButton aggWithHavingButton;
     private JButton nestedAggButton;
     private JButton divisionButton;
+    private JButton joinButton;
+    private JComboBox<String> tableAComboBox;
+    private JComboBox<String> tableBComboBox;
+    private JTextField criteriaField;
     private JTable table;
-    private static final int WIDTH = 600;
-    private static final int HEIGHT = 400;
 
-    public FunctionsFrame() {
+    private String[] tables = {"Select table", "Director", "Athlete", "Team",  "Car", "CarModel", "Event", "PitCrew", "Results",
+            "LapTime", "Track", "TrackZipCode", "Operate", "ResultsScoring", "Sponsor",
+            "SponsorsEvent", "SponsorsTeam", "Practice", "SeasonRace", "Exhibition", "DriveIn"};
+    private static final int WIDTH = 800;
+    private static final int HEIGHT = 500;
+
+    public JoinFrame() {
         super("Specific Functions");
         setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -34,65 +40,47 @@ public class FunctionsFrame extends JFrame implements ActionListener {
         aggWithHavingButton = new JButton("Having");
         nestedAggButton = new JButton("Nested");
         divisionButton = new JButton("Division");
+        joinButton = new JButton("Join");
 
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.add(aggWithGroupByButton);
-        buttonPanel.add(aggWithHavingButton);
-        buttonPanel.add(nestedAggButton);
-        buttonPanel.add(divisionButton);
+        JPanel fieldPanel = new JPanel();
+        JLabel tableALabel = new JLabel("Table A:");
+        JLabel tableBLabel = new JLabel("  Table B:");
+        JLabel criteriaLabel = new JLabel("  Criteria: ");
+        tableAComboBox = new JComboBox<>(tables);
+        tableBComboBox = new JComboBox<>(tables);
+        criteriaField = new JTextField("",15);
+
+        fieldPanel.add(tableALabel);
+        fieldPanel.add(tableAComboBox);
+        fieldPanel.add(tableBLabel);
+        fieldPanel.add(tableBComboBox);
+        fieldPanel.add(criteriaLabel);
+        fieldPanel.add(criteriaField);
+        fieldPanel.add(joinButton);
 
         table = new JTable();
         JScrollPane scrollPane = new JScrollPane(table);
         table.setFillsViewportHeight(true);
-        this.add(buttonPanel, BorderLayout.PAGE_START);
+        this.add(fieldPanel, BorderLayout.PAGE_START);
         this.add(scrollPane, BorderLayout.CENTER);
 
-        aggWithGroupByButton.setToolTipText("<html>" + AGG_BY_GROUP_QUERY + "<br>" + "Find each athlete's best lap time.</html>");
-        aggWithGroupByButton.addActionListener(this);
-        aggWithHavingButton.setToolTipText(AGG_WITH_HAVING_QUERY);
-        aggWithHavingButton.addActionListener(this);
-        nestedAggButton.setToolTipText("<html>" + NESTED_AGG_QUERY+ "<br>" + "Find the best laps that are faster than the average best lap time.</html>");
-        nestedAggButton.addActionListener(this);
-        divisionButton.setToolTipText("<html>" + DIVISION_QUERY + "<br>" + "Find all sponsors who have sponsored every team.</html>");
-        divisionButton.addActionListener(this);
+        joinButton.addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand() == "Group") {
-            groupButtonPress();
-        } else if (e.getActionCommand() == "Having") {
-            havingButtonPress();
-        } else if (e.getActionCommand() == "Nested") {
-            nestedButtonPress();
-        } else if (e.getActionCommand() == "Division") {
-            divisionButtonPress();
-        }
+        joinButtonPress();
     }
 
-    private void divisionButtonPress() {
+    private void joinButtonPress() {
         DatabaseConnectionHandler dbh = DatabaseConnectionHandler.getHandler();
-        Object[][] data = dbh.division();
+        String tableA = tableAComboBox.getItemAt(tableAComboBox.getSelectedIndex());
+        String tableB = tableBComboBox.getItemAt(tableBComboBox.getSelectedIndex());
+        String criteria = criteriaField.getText();
+        Object[][] data = dbh.join(tableA, tableB, criteria);
         processTable(data);
     }
 
-    private void nestedButtonPress() {
-        DatabaseConnectionHandler dbh = DatabaseConnectionHandler.getHandler();
-        Object[][] data = dbh.nestedAgg();
-        processTable(data);
-    }
-
-    private void havingButtonPress() {
-        DatabaseConnectionHandler dbh = DatabaseConnectionHandler.getHandler();
-        Object[][] data = dbh.aggWithHaving();
-        processTable(data);
-    }
-
-    private void groupButtonPress() {
-        DatabaseConnectionHandler dbh = DatabaseConnectionHandler.getHandler();
-        Object[][] data = dbh.aggByGroup();
-        processTable(data);
-    }
 
     // take the queried data and load it into the table
     private void processTable(Object[][] data) {

@@ -12,7 +12,7 @@ import java.util.List;
 public class TableComboBox extends JComboBox implements ActionListener {
 
     private String[] modelClasses = {"Select table", "Directors", "Athletes", "Teams",  "Cars", "Car Models", "Events", "Pit Crew", "Results",
-            "Lap Times", "Tracks", "Track zip codes", "Drive In", "Results scoring", "Sponsor sponsors Team", "Sponsors",
+            "Lap Times", "Tracks", "Track zip codes", "Drive In", "Results scoring", "Sponsors",
             "Sponsor sponsors Event", "Sponsor sponsors Team", "Practices", "Season races", "Exhibitions", "Driver operates"};
 
     public final JComboBox comboBox;

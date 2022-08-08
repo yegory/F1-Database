@@ -11,7 +11,6 @@ import java.awt.event.ActionListener;
 public class HomeWindow implements ActionListener {
 
     private JFrame HomeFrame;
-    private JFrame DirectorInsertion;
     private JPanel buttonPanel;     // Panel 1
     private JPanel checkboxPanel;   // Panel 2
     private JPanel criteriaPanel;   // Panel 3
@@ -141,7 +140,7 @@ public class HomeWindow implements ActionListener {
         } else if (e.getActionCommand() == "Other functions") {
             new FunctionsFrame();
         } else if (e.getActionCommand() == "Join operation") {
-            // join operation frame creation here
+            new JoinFrame();
         }
         else if (e.getActionCommand() == "Apply selection criteria") {
             tableComboBox.handleTable(

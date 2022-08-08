@@ -127,17 +127,20 @@ public class LoginWindow extends JFrame implements ActionListener {
     /**
      * ActionListener Methods
      */
-//    @Override
-//    public void actionPerformed(ActionEvent e) {
-//        delegate.login(usernameField.getText(), String.valueOf(passwordField.getPassword()));
-//    }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        delegate.login(usernameField.getText(), String.valueOf(passwordField.getPassword()));
+    }
 
     /**
      * Can use for debugging to skip login
      */
+    /*
     @Override
     public void actionPerformed(ActionEvent e) {
         delegate.login("ora_yegorye", "a92864321");
     }
     // ssh -l yegorye -L localhost:1522:dbhost.students.cs.ubc.ca:1522 remote.students.cs.ubc.ca
+
+     */
 }

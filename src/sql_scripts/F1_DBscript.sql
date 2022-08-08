@@ -553,3 +553,19 @@ INSERT INTO SponsorsTeam VALUES
     (4, 4, 12500);
 INSERT INTO SponsorsTeam VALUES
     (5, 5, 30000);
+INSERT INTO SponsorsTeam VALUES
+    (1, 2, 30000);
+INSERT INTO SponsorsTeam VALUES
+    (1, 3, 30000);
+INSERT INTO SponsorsTeam VALUES
+    (1, 4, 30000);
+INSERT INTO SponsorsTeam VALUES
+    (1, 5, 30000);
+INSERT INTO SponsorsTeam VALUES
+    (5, 1, 30000);
+INSERT INTO SponsorsTeam VALUES
+    (5, 2, 30000);
+INSERT INTO SponsorsTeam VALUES
+    (5, 3, 30000);
+INSERT INTO SponsorsTeam VALUES
+    (5, 4, 30000);
