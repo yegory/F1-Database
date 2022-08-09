@@ -19,14 +19,14 @@ public class JoinFrame extends JFrame implements ActionListener {
     private JTextField criteriaField;
     private JTable table;
 
-    private String[] tables = {"Select table", "Director", "Athlete", "Team",  "Car", "CarModel", "Event", "PitCrew", "Results",
-            "LapTime", "Track", "TrackZipCode", "Operate", "ResultsScoring", "Sponsor",
+    private String[] tables = {"Select table", "Director", "Athlete", "Team",  "Car", "CarModel", "Event", "PitCrew",
+            "Results", "LapTime", "Track", "TrackZipCode", "Operate", "ResultsScoring", "Sponsor",
             "SponsorsEvent", "SponsorsTeam", "Practice", "SeasonRace", "Exhibition", "DriveIn"};
-    private static final int WIDTH = 800;
+    private static final int WIDTH = 1000;
     private static final int HEIGHT = 500;
 
     public JoinFrame() {
-        super("Specific Functions");
+        super("Join Tables");
         setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(true);
