@@ -9,10 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class JoinFrame extends JFrame implements ActionListener {
-    private JButton aggWithGroupByButton;
-    private JButton aggWithHavingButton;
-    private JButton nestedAggButton;
-    private JButton divisionButton;
     private JButton joinButton;
     private JComboBox<String> tableAComboBox;
     private JComboBox<String> tableBComboBox;
@@ -36,10 +32,6 @@ public class JoinFrame extends JFrame implements ActionListener {
     }
 
     private void initializePanel() {
-        aggWithGroupByButton = new JButton("Group");
-        aggWithHavingButton = new JButton("Having");
-        nestedAggButton = new JButton("Nested");
-        divisionButton = new JButton("Division");
         joinButton = new JButton("Join");
 
         JPanel fieldPanel = new JPanel();
