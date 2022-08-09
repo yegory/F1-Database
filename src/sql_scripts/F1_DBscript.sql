@@ -312,6 +312,16 @@ INSERT INTO TrackZipCode VALUES
     ('039596', 'Marina Bay', 'Singapore', 'Downtown Core');
 INSERT INTO TrackZipCode VALUES
     ('8500', 'Portimao', 'Portugal', 'Algarve');
+INSERT INTO Sponsor VALUES
+    (6, 'The University of British Columbia');
+INSERT INTO Sponsor VALUES
+    (7, 'Microsoft');
+INSERT INTO Sponsor VALUES
+    (8, 'Samsung');
+INSERT INTO Sponsor VALUES
+    (9, 'Bridgestone Corporation');
+INSERT INTO Sponsor VALUES
+    (10, 'NGK Spark Plug Co. Ltd');
 
 
 INSERT INTO Team VALUES
@@ -569,3 +579,13 @@ INSERT INTO SponsorsTeam VALUES
     (5, 3, 45000);
 INSERT INTO SponsorsTeam VALUES
     (5, 4, 25000);
+INSERT INTO SponsorsTeam VALUES
+    (7, 1, 68000);
+INSERT INTO SponsorsTeam VALUES
+    (7, 2, 70000);
+INSERT INTO SponsorsTeam VALUES
+    (7, 3, 15000);
+INSERT INTO SponsorsTeam VALUES
+    (7, 4, 33000);
+INSERT INTO SponsorsTeam VALUES
+    (7, 5, 28000);
