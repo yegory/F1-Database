@@ -297,7 +297,17 @@ INSERT INTO Sponsor VALUES
 INSERT INTO Sponsor VALUES
     (4, 'Rolex Watch Co. Ltd');
 INSERT INTO Sponsor VALUES
-    (5, 'Amazon Web Services, Inc.');
+    (5, 'Amazon Web Services');
+INSERT INTO Sponsor VALUES
+    (6, 'The University of British Columbia');
+INSERT INTO Sponsor VALUES
+    (7, 'Microsoft');
+INSERT INTO Sponsor VALUES
+    (8, 'Samsung');
+INSERT INTO Sponsor VALUES
+    (9, 'Bridgestone Corporation');
+INSERT INTO Sponsor VALUES
+    (10, 'NGK Spark Plug Co. Ltd');
 
 
 INSERT INTO TrackZipCode VALUES
@@ -569,3 +579,13 @@ INSERT INTO SponsorsTeam VALUES
     (5, 3, 45000);
 INSERT INTO SponsorsTeam VALUES
     (5, 4, 25000);
+INSERT INTO SponsorsTeam VALUES
+    (7, 1, 68000);
+INSERT INTO SponsorsTeam VALUES
+    (7, 2, 70000);
+INSERT INTO SponsorsTeam VALUES
+    (7, 3, 15000);
+INSERT INTO SponsorsTeam VALUES
+    (7, 4, 33000);
+INSERT INTO SponsorsTeam VALUES
+    (7, 5, 28000);
