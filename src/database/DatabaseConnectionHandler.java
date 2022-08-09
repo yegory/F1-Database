@@ -23,6 +23,7 @@ public class DatabaseConnectionHandler {
 
     private DirectorHandler directorHandler;
     private ResultsHandler resultsHandler;
+    private SponsorsTeamHandler sponsorsTeamHandler;
     private QueryBuilder qb;
 
     private Connection connection = null;
@@ -45,6 +46,7 @@ public class DatabaseConnectionHandler {
     private void initiateTableHandlers() {
         directorHandler = new DirectorHandler();
         resultsHandler = new ResultsHandler();
+        sponsorsTeamHandler = new SponsorsTeamHandler();
         // TODO: make the rest of the table handler classes
     }
 
@@ -263,5 +265,8 @@ public class DatabaseConnectionHandler {
 
     public ResultsHandler getResultsHandler() {
         return resultsHandler;
+    }
+    public SponsorsTeamHandler getSponsorsTeamHandler() {
+        return sponsorsTeamHandler;
     }
 }

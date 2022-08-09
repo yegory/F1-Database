@@ -2,6 +2,7 @@ package ui;
 
 import database.DatabaseConnectionHandler;
 import database.DirectorHandler;
+import database.SponsorsTeamHandler;
 import model.SponsorsTeam;
 
 import javax.swing.*;
@@ -59,11 +60,11 @@ public class InsertSponsorsTeamFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         DatabaseConnectionHandler dbh = DatabaseConnectionHandler.getHandler();
-        DirectorHandler dh = dbh.getDirectorHandler();
+        SponsorsTeamHandler sth = dbh.getSponsorsTeamHandler();
         int sponsorID = Integer.parseInt(sponsorIDField.getText());
         int teamID = Integer.parseInt(teamIDField.getText());
         int dealValue = Integer.parseInt(dealValueField.getText());
-        dh.insertSponsorsTeam(new SponsorsTeam(sponsorID, teamID, dealValue));
+        sth.insertSponsorsTeam(new SponsorsTeam(sponsorID, teamID, dealValue));
         this.dispose();
     }
 }
