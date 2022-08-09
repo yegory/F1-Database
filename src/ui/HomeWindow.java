@@ -131,12 +131,16 @@ public class HomeWindow implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if ((e.getActionCommand() =="Insert operation") &&
-                (tableComboBox.comboBox.getSelectedItem().toString() == "Directors")) {
-            new InsertFrame();
-        } else if ((e.getActionCommand() == "Remove operation") &&
-                (tableComboBox.comboBox.getSelectedItem().toString() == "Results")){
-            new DeleteFrame();
+        if (e.getActionCommand() =="Insert operation") {
+            if (tableComboBox.comboBox.getSelectedItem().toString() == "Directors")
+                new InsertFrame();
+            else if (tableComboBox.comboBox.getSelectedItem().toString() == "Sponsor sponsors Team")
+                new InsertSponsorsTeamFrame();
+        } else if (e.getActionCommand() == "Remove operation") {
+            if (tableComboBox.comboBox.getSelectedItem().toString() == "Results")
+                new DeleteFrame();
+            if (tableComboBox.comboBox.getSelectedItem().toString() == "Sponsor sponsors Team")
+                new DeleteFrameSponsorsTeam();
         } else if ((e.getActionCommand() == "Update operation") &&
                 (tableComboBox.comboBox.getSelectedItem().toString() == "Directors")){
             new UpdateFrame();

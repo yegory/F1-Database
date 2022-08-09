@@ -1,19 +1,12 @@
 package controller;
 
 import database.DatabaseConnectionHandler;
-import database.DirectorHandler;
 import delegates.LoginWindowDelegate;
-import model.Director;
 
 import ui.HomeWindow;
 import ui.LoginWindow;
 
-import javax.xml.crypto.Data;
-import java.sql.Array;
-
 import ui.*;
-
-import java.util.ArrayList;
 
 public class F1_Manager implements LoginWindowDelegate {
     private DatabaseConnectionHandler dbHandler = null;

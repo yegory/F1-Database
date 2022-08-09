@@ -2,6 +2,7 @@ package database;
 
 import model.Director;
 import model.Results;
+import model.SponsorsTeam;
 import util.PrintablePreparedStatement;
 
 import java.sql.Connection;
@@ -31,7 +32,28 @@ public class ResultsHandler {
 
             int rowCount = ps.executeUpdate();
             if (rowCount == 0) {
-                System.out.println(WARNING_TAG + " Branch " + results.resultsID() + " does not exist!");
+                System.out.println(WARNING_TAG + " Result " + results.resultsID() + " does not exist!");
+            }
+
+            connection.commit();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            DatabaseConnectionHandler.getHandler().rollbackConnection();
+        }
+    }
+
+    public void deleteSponsorsTeam(SponsorsTeam sponsorsTeam) {
+        updateConnection();
+        try {
+            String query = "DELETE FROM SPONSORSTEAM WHERE sponsorID = ? AND teamID = ?";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setInt(1, sponsorsTeam.sponsorID());
+            ps.setInt(2, sponsorsTeam.teamID());
+
+            int rowCount = ps.executeUpdate();
+            if (rowCount == 0) {
+                System.out.println(WARNING_TAG + " SponsorsTeam " + sponsorsTeam.sponsorID() + ", " + sponsorsTeam.teamID() + " does not exist!");
             }
 
             connection.commit();
