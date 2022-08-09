@@ -315,39 +315,39 @@ INSERT INTO TrackZipCode VALUES
 
 
 INSERT INTO Team VALUES
-    (1, 1, 'Alfa Romeo',        '2014-07-07', '2020-01-01', 348);
+    (1, 1, 'Alfa Romeo',        TO_DATE('2014-07-07','YYYY-MM-DD'), TO_DATE('2020-01-01','YYYY-MM-DD'), 348);
 INSERT INTO Team VALUES
-    (2, 2, 'Mercedes-AMG',      '2016-06-18', '2020-02-19', 412);
+    (2, 2, 'Mercedes-AMG',      TO_DATE('2016-06-18','YYYY-MM-DD'), TO_DATE('2020-02-19','YYYY-MM-DD'), 412);
 INSERT INTO Team VALUES
-    (3, 3, 'Oracle Red Bull',   '2010-10-07', '2015-08-04', 521);
+    (3, 3, 'Oracle Red Bull',   TO_DATE('2010-10-07','YYYY-MM-DD'), TO_DATE('2015-08-04','YYYY-MM-DD'), 521);
 INSERT INTO Team VALUES
-    (4, 4, 'Scuderia Ferrari',  '2020-04-20', '2022-06-19', 281);
+    (4, 4, 'Scuderia Ferrari',  TO_DATE('2020-04-20','YYYY-MM-DD'), TO_DATE('2022-06-19','YYYY-MM-DD'), 281);
 INSERT INTO Team VALUES
-    (5, 5, 'McLaren',           '2004-06-19', '2014-11-29', 441);
+    (5, 5, 'McLaren',           TO_DATE('2004-06-19','YYYY-MM-DD'), TO_DATE('2014-11-29','YYYY-MM-DD'), 441);
 
 
 INSERT INTO Athlete VALUES
-    (1, 1, 'Kevin',     'Stark',    '1990-07-18',  89, '2014-07-07', '2020-01-01');
+    (1, 1, 'Kevin',     'Stark',    TO_DATE('1990-07-18','YYYY-MM-DD'),  89, TO_DATE('2014-07-07','YYYY-MM-DD'), TO_DATE('2020-01-01','YYYY-MM-DD'));
 INSERT INTO Athlete VALUES
-    (2, 2, 'Frank',     'Ocean',    '1994-01-23', 128, '2016-06-18', '2020-02-19');
+    (2, 2, 'Frank',     'Ocean',    TO_DATE('1994-01-23','YYYY-MM-DD'), 128, TO_DATE('2016-06-18','YYYY-MM-DD'), TO_DATE('2020-02-19','YYYY-MM-DD'));
 INSERT INTO Athlete VALUES
-    (3, 3, 'Charles',   'Oliviera', '1985-10-07', 234, '2005-10-07', '2015-02-17');
+    (3, 3, 'Charles',   'Oliviera', TO_DATE('1985-10-07','YYYY-MM-DD'), 234, TO_DATE('2005-10-07','YYYY-MM-DD'), TO_DATE('2015-02-17','YYYY-MM-DD'));
 INSERT INTO Athlete VALUES
-    (4, 4, 'Rich',      'Brian',    '1993-03-03',  12, '2020-04-20', '2022-06-19');
+    (4, 4, 'Rich',      'Brian',    TO_DATE('1993-03-03','YYYY-MM-DD'),  12, TO_DATE('2020-04-20','YYYY-MM-DD'), TO_DATE('2022-06-19','YYYY-MM-DD'));
 INSERT INTO Athlete VALUES
-    (5, 5, 'Kolton',    'Brown',    '1985-08-17',  66, '2004-05-19', '2014-08-28');
+    (5, 5, 'Kolton',    'Brown',    TO_DATE('1985-08-17','YYYY-MM-DD'),  66, TO_DATE('2004-05-19','YYYY-MM-DD'), TO_DATE('2014-08-28','YYYY-MM-DD'));
 
 
 INSERT INTO PitCrew VALUES
-    (1, 'Tyre Gunner',  'John',     'Smith',        1, '2021-07-07', '2022-07-07');
+    (1, 'Tyre Gunner',  'John',     'Smith',        1, TO_DATE('2021-07-07','YYYY-MM-DD'), TO_DATE('2022-07-07','YYYY-MM-DD'));
 INSERT INTO PitCrew VALUES
-    (2, 'Tyre Off',     'Yegor',    'Yeryomenko',   2, '2021-11-30', '2022-03-13');
+    (2, 'Tyre Off',     'Yegor',    'Yeryomenko',   2, TO_DATE('2021-11-30','YYYY-MM-DD'), TO_DATE('2022-03-13','YYYY-MM-DD'));
 INSERT INTO PitCrew VALUES
-    (3, 'Tyre On',      'Bob',      'Marley',       3, '2019-07-07', '2020-02-07');
+    (3, 'Tyre On',      'Bob',      'Marley',       3, TO_DATE('2019-07-07','YYYY-MM-DD'), TO_DATE('2020-02-07','YYYY-MM-DD'));
 INSERT INTO PitCrew VALUES
-    (4, 'Front Jack',   'Fancis',   'Ngannou',      4, '2020-03-18', '2022-01-07');
+    (4, 'Front Jack',   'Fancis',   'Ngannou',      4, TO_DATE('2020-03-18','YYYY-MM-DD'), TO_DATE('2022-01-07','YYYY-MM-DD'));
 INSERT INTO PitCrew VALUES
-    (5, 'Rear Jack',    'Jon',      'Jones',        5, '2022-06-07', '2022-07-07');
+    (5, 'Rear Jack',    'Jon',      'Jones',        5, TO_DATE('2022-06-07','YYYY-MM-DD'), TO_DATE('2022-07-07','YYYY-MM-DD'));
 
 
 INSERT INTO Track VALUES
@@ -365,35 +365,35 @@ INSERT INTO Track VALUES
 
 
 INSERT INTO Event VALUES
-    (1,  1, '2014-07-07', 'French Grand Prix',    82);
+    (1,  1, TO_DATE('2014-07-07','YYYY-MM-DD'), 'French Grand Prix',    82);
 INSERT INTO Event VALUES
-    (2,  2, '2016-06-18', 'German Grand Prix',    60);
+    (2,  2, TO_DATE('2016-06-18','YYYY-MM-DD'), 'German Grand Prix',    60);
 INSERT INTO Event VALUES
-    (3,  3, '2010-10-07', 'Hungarian Grand Prix', 35);
+    (3,  3, TO_DATE('2010-10-07','YYYY-MM-DD'), 'Hungarian Grand Prix', 35);
 INSERT INTO Event VALUES
-    (4,  4, '2020-04-20', 'Indian Grand Prix',    65);
+    (4,  4, TO_DATE('2020-04-20','YYYY-MM-DD'), 'Indian Grand Prix',    65);
 INSERT INTO Event VALUES
-    (5,  5, '2004-06-19', 'Bahrain Grand Prix',   40);
+    (5,  5, TO_DATE('2004-06-19','YYYY-MM-DD'), 'Bahrain Grand Prix',   40);
 INSERT INTO Event VALUES
-    (6,  1, '2014-07-07', 'French Practice',      15);
+    (6,  1, TO_DATE('2014-07-07','YYYY-MM-DD'), 'French Practice',      15);
 INSERT INTO Event VALUES
-    (7,  2, '2016-06-18', 'German Practice',      67);
+    (7,  2, TO_DATE('2016-06-18','YYYY-MM-DD'), 'German Practice',      67);
 INSERT INTO Event VALUES
-    (8,  3, '2010-10-07', 'Hungarian Practice',   25);
+    (8,  3, TO_DATE('2010-10-07','YYYY-MM-DD'), 'Hungarian Practice',   25);
 INSERT INTO Event VALUES
-    (9,  4, '2020-04-20', 'Indian Practice',      15);
+    (9,  4, TO_DATE('2020-04-20','YYYY-MM-DD'), 'Indian Practice',      15);
 INSERT INTO Event VALUES
-    (10, 5, '2004-06-19', 'Bahrain Practice',     34);
+    (10, 5, TO_DATE('2004-06-19','YYYY-MM-DD'), 'Bahrain Practice',     34);
 INSERT INTO Event VALUES
-    (11, 1, '2014-07-06', 'French Exhibition',    21);
+    (11, 1, TO_DATE('2014-07-06','YYYY-MM-DD'), 'French Exhibition',    21);
 INSERT INTO Event VALUES
-    (12, 2, '2016-06-17', 'German Exhibition',    25);
+    (12, 2, TO_DATE('2016-06-17','YYYY-MM-DD'), 'German Exhibition',    25);
 INSERT INTO Event VALUES
-    (13, 3, '2010-10-06', 'Hungarian Exhibition', 15);
+    (13, 3, TO_DATE('2010-10-06','YYYY-MM-DD'), 'Hungarian Exhibition', 15);
 INSERT INTO Event VALUES
-    (14, 4, '2020-04-19', 'Indian Exhibition',    35);
+    (14, 4, TO_DATE('2020-04-19','YYYY-MM-DD'), 'Indian Exhibition',    35);
 INSERT INTO Event VALUES
-    (15, 5, '2004-06-18', 'Bahrain Exhibition',   23);
+    (15, 5, TO_DATE('2004-06-18','YYYY-MM-DD'), 'Bahrain Exhibition',   23);
 
 
 INSERT INTO Results VALUES
