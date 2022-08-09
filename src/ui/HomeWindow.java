@@ -93,7 +93,7 @@ public class HomeWindow implements ActionListener {
         table = new Table(tablePanel, columnNames, data, HomeFrame.getWidth()-10, tablePanel.getHeight() - 40);
 
         // Add Combo Buttons and buttons to Panel 1
-        JLabel label = new JLabel("Selected table:");
+        JLabel label = new JLabel("Table:");
         buttonPanel.add(label);
         JLabel columnLabel = new JLabel("Selected columns:");
         checkboxPanel.add(columnLabel);
