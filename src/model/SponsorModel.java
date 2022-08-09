@@ -1,8 +1,6 @@
-package model.Entity;
+package model;
 
-import model.EntityInterfaces.Sponsor;
-
-public class SponsorModel implements Sponsor {
+public class SponsorModel {
     private final int sponsorID;
     private final String name;
 
@@ -11,12 +9,10 @@ public class SponsorModel implements Sponsor {
         this.name = name;
     }
 
-    @Override
     public int getSponsorID() {
         return sponsorID;
     }
 
-    @Override
     public String getName() {
         return name;
     }

@@ -131,12 +131,4 @@ public class LoginWindow extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         delegate.login(usernameField.getText(), String.valueOf(passwordField.getPassword()));
     }
-
-    /**
-     * Can use for debugging to skip login
-     */
-//    @Override
-//    public void actionPerformed(ActionEvent e) {
-//        delegate.login("ora_CWL", "aNUM");
-//    }
 }
